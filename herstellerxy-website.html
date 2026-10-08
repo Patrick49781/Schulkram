@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>HerstellerXY GmbH | Schleifmaschinen und Ersatzteile</title>
+<meta name="description" content="HerstellerXY baut seit 1972 Schleifmaschinen in Schwäbisch Gmünd. Ersatzteile zu jeder Maschine, rund um die Uhr bestellbar über den Code am Typenschild.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+--blau:#1f5c8b; --blau-d:#174668; --ink:#14181c; --mut:#6b7076;
+--flaeche:#edeef0; --linie:#dcdee2; --linie-s:#c3c6cb;
+--plate-h:#e4e6e9; --plate-t:#cdd0d4; --plate-r:#b0b4b9; --grav:#2b2f33;
+--gruen:#2f6b3a; --amber:#8a6210; --warn:#9a4a0b; --warnbg:#fbf0dd; --rot:#a12c20;
+--sans:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+--mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--flaeche);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;
+-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+
+
+
+
+main{padding:0 0 10px}
+.block{padding:18px 18px 0}
+h1{font-size:1.45rem;line-height:1.2;margin:0 0 6px;font-weight:600}
+h2{font-size:1.05rem;margin:0 0 8px;font-weight:600}
+p{margin:0 0 12px;max-width:62ch}
+.sub{color:var(--mut);font-size:.92rem}
+
+/* Typenschild */
+.schild{position:relative;background:linear-gradient(180deg,var(--plate-h),var(--plate-t));
+border:1px solid var(--plate-r);border-radius:3px;padding:14px 14px;display:flex;gap:12px;align-items:flex-start;
+box-shadow:inset 0 1px 0 rgba(255,255,255,.75),0 1px 2px rgba(0,0,0,.14)}
+.schild::before,.schild::after{content:"";position:absolute;top:7px;width:7px;height:7px;border-radius:50%;
+background:radial-gradient(circle at 35% 30%,#fbfbfc,#9ea2a7);box-shadow:0 1px 0 rgba(255,255,255,.6)}
+.schild::before{left:7px}.schild::after{right:7px}
+.schild .daten{flex:1 1 auto;min-width:0}
+.schild .marke{font-weight:600;font-size:.84rem;color:var(--grav);margin-bottom:7px;
+text-shadow:0 1px 0 rgba(255,255,255,.65)}
+.schild .zeile{display:flex;gap:10px;border-top:1px solid rgba(0,0,0,.09);padding:4px 0 3px}
+.schild .zeile:first-of-type{border-top:0}
+.schild .f{font-family:var(--mono);font-size:.64rem;color:#5c6066;width:68px;flex:none;padding-top:3px}
+.schild .w{font-family:var(--mono);font-size:.88rem;font-weight:500;color:var(--grav);
+text-shadow:0 1px 0 rgba(255,255,255,.6);word-break:break-word}
+.schild .code{flex:none;text-align:center}
+.schild .code svg{display:block;width:80px;height:80px;background:#fff;padding:4px;border:1px solid #b7babf}
+.schild .code .url{font-family:var(--mono);font-size:.5rem;color:#5c6066;margin-top:4px;max-width:88px;
+word-break:break-all;line-height:1.25}
+
+/* Demo-Wand */
+.wand{display:block;width:100%;text-align:left;background:transparent;border:0;padding:0;margin:0 0 14px;
+font:inherit;color:inherit;cursor:pointer}
+.wand .fall{padding:7px 2px 0;font-size:.84rem;color:var(--mut);line-height:1.4}
+.wand .fall b{display:block;color:var(--ink);font-weight:500}
+.wand:focus-visible .schild{outline:3px solid var(--blau);outline-offset:2px}
+.hinweisbox{background:#f4f6f8;border-left:3px solid var(--blau);padding:11px 14px;margin:0 0 18px;font-size:.88rem;color:#3c4248}
+.dienste{border-top:1px solid var(--linie);margin-top:22px;padding:16px 18px 24px;background:#fafbfc}
+.dienste h2{font-size:.95rem;margin-bottom:4px}
+.dienste a{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;
+border-bottom:1px solid var(--linie);color:var(--ink);text-decoration:none;font-size:.95rem}
+.dienste a:last-of-type{border-bottom:0}
+.dienste a span{color:var(--mut);font-size:.82rem}
+
+/* Suche und Filter */
+.suchfeld{position:relative;margin:16px 0 10px}
+.suchfeld input{width:100%;height:48px;border:1px solid var(--linie-s);border-radius:2px;padding:0 38px 0 12px;
+font:inherit;font-size:16px;background:#fff}
+.suchfeld input:focus{outline:2px solid var(--blau);outline-offset:-1px;border-color:var(--blau)}
+.suchfeld .leeren{position:absolute;right:2px;top:2px;height:44px;width:36px;border:0;background:transparent;
+color:var(--mut);font-size:1.2rem;cursor:pointer}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 18px 12px;margin:0 -18px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;height:36px;padding:0 12px;border:1px solid var(--linie-s);background:#fff;border-radius:2px;
+font:inherit;font-size:.86rem;color:#3c4248;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--blau);border-color:var(--blau);color:#fff}
+.chip.ver[aria-pressed="true"]{background:var(--amber);border-color:var(--amber)}
+.zaehler{font-family:var(--mono);font-size:.76rem;color:var(--mut);padding:0 18px 8px;
+border-bottom:1px solid var(--linie)}
+
+/* Teileliste */
+.liste{list-style:none;margin:0;padding:0}
+.teil{display:grid;grid-template-columns:4px 1fr auto;gap:0 12px;border-bottom:1px solid var(--linie);
+padding:0;align-items:start}
+.teil .strip{grid-row:1/3;width:4px;align-self:stretch;background:var(--gruen)}
+.teil.besch .strip{background:var(--amber)}
+.teil.aus .strip{background:var(--linie-s)}
+.teil .info{padding:12px 0 0}
+.teil .ben{font-weight:500;line-height:1.3}
+.teil .meta{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:3px;font-size:.78rem;color:var(--mut)}
+.teil .meta .nr{font-family:var(--mono);color:#3c4248}
+.teil .preis{text-align:right;padding:12px 18px 0 0;font-family:var(--mono);font-variant-numeric:tabular-nums;
+font-weight:500;white-space:nowrap}
+.teil .verf{display:block;font-family:var(--sans);font-size:.72rem;font-weight:400;color:var(--gruen);margin-top:2px}
+.teil.besch .verf{color:var(--amber)}
+.teil .aktion{grid-column:2/4;display:flex;align-items:center;gap:8px;padding:9px 18px 12px 0}
+.teil .aktion .fuellen{flex:1 1 auto}
+.menge{display:flex;align-items:center;border:1px solid var(--linie-s);border-radius:2px;height:44px}
+.menge button{width:40px;height:42px;border:0;background:transparent;font-size:1.25rem;line-height:1;
+color:#3c4248;cursor:pointer}
+.menge button:disabled{color:#c3c6cb;cursor:default}
+.menge .wert{width:34px;text-align:center;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.95rem}
+.btn{appearance:none;border:1px solid var(--blau);background:var(--blau);color:#fff;font:inherit;font-weight:500;
+height:44px;padding:0 16px;border-radius:2px;cursor:pointer;white-space:nowrap}
+.btn:active{background:var(--blau-d)}
+.btn.sek{background:#fff;color:var(--blau)}
+.btn.voll{width:100%;height:52px;font-size:1.02rem}
+.btn:disabled{background:#e7e9eb;border-color:#e7e9eb;color:#9aa0a6;cursor:default}
+.btn:focus-visible,.chip:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:3px solid var(--blau);outline-offset:2px}
+.marke-zeile{font-size:.76rem;color:var(--mut);padding:10px 18px 0}
+.abg{margin-top:6px;background:var(--warnbg);border-left:3px solid var(--warn);padding:8px 10px;font-size:.82rem}
+.abg a{color:var(--warn)}
+.leer{padding:34px 18px;text-align:center;color:var(--mut)}
+
+/* Warnung Datenlücke */
+.warnung{margin:16px 18px 0;background:var(--warnbg);border:1px solid #e3cfa6;border-left:4px solid var(--warn);
+padding:13px 15px}
+.warnung h2{color:var(--warn);font-size:.98rem;margin-bottom:5px}
+.warnung p{font-size:.9rem;margin:0 0 10px;color:#4a4136}
+.ungeprueft{font-size:.72rem;color:var(--warn);border:1px solid #e0cba4;padding:1px 5px;border-radius:2px;
+background:#fff}
+
+/* Warenkorbleiste */
+.leiste{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#fff;border-top:1px solid var(--linie-s);
+box-shadow:0 -2px 10px rgba(0,0,0,.07);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px))}
+.leiste .innen{max-width:560px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.leiste .zus{flex:1 1 auto;min-width:0;line-height:1.25}
+.leiste .zus b{display:block;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.leiste .zus span{font-size:.78rem;color:var(--mut)}
+.puls{animation:puls .45s ease}
+@keyframes puls{0%{transform:scale(1)}40%{transform:scale(1.11)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.puls{animation:none}}
+
+/* Formular */
+.feld{margin-bottom:14px}
+.feld label{display:block;font-size:.85rem;color:#3c4248;margin-bottom:4px}
+.feld .opt{color:var(--mut)}
+.feld input,.feld select,.feld textarea{width:100%;min-height:48px;border:1px solid var(--linie-s);border-radius:2px;
+padding:11px 12px;font:inherit;font-size:16px;background:#fff}
+.feld textarea{min-height:86px;resize:vertical}
+.feld.fehler input,.feld.fehler select,.feld.fehler textarea{border-color:var(--rot);background:#fdf6f5}
+.feld .meldung{display:none;color:var(--rot);font-size:.82rem;margin-top:4px}
+.feld.fehler .meldung{display:block}
+fieldset{border:0;margin:0 0 14px;padding:0}
+fieldset legend{font-size:.85rem;color:#3c4248;margin-bottom:6px;padding:0}
+.wahl{display:flex;gap:8px}
+.wahl label{flex:1 1 0;border:1px solid var(--linie-s);border-radius:2px;padding:11px 10px;text-align:center;
+font-size:.9rem;cursor:pointer;background:#fff}
+.wahl input{position:absolute;opacity:0;pointer-events:none}
+.wahl input:checked+span{font-weight:600}
+.wahl label:has(input:checked){border-color:var(--blau);box-shadow:inset 0 0 0 1px var(--blau);color:var(--blau)}
+
+/* Positionen und Summen */
+.pos{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--linie)}
+.pos .l{min-width:0}
+.pos .ben{font-weight:500;font-size:.95rem}
+.pos .nr{font-family:var(--mono);font-size:.78rem;color:var(--mut);margin-top:2px}
+.pos .r{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pos .r small{display:block;color:var(--mut);font-size:.74rem;font-family:var(--sans)}
+.summe{display:flex;justify-content:space-between;padding:13px 0 4px;font-weight:600;font-size:1.05rem}
+.summe .w{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.fuss-hinweis{font-size:.78rem;color:var(--mut);margin:4px 0 18px}
+
+/* Bestätigung */
+.quittung{border:1px solid var(--linie-s);border-top:4px solid var(--gruen);padding:16px;margin:18px 18px 0}
+.quittung .nr{font-family:var(--mono);font-size:1.5rem;font-weight:600;letter-spacing:.02em}
+.quittung .wann{font-size:.82rem;color:var(--mut);margin-bottom:12px}
+
+/* Herstellersicht */
+.kennzahlen{display:flex;border-top:2px solid var(--ink);border-bottom:1px solid var(--linie);margin:14px 0 0}
+.kennzahlen div{flex:1 1 0;padding:12px 10px 12px 0}
+.kennzahlen b{display:block;font-family:var(--mono);font-size:1.3rem;font-weight:600;line-height:1.2}
+.kennzahlen span{font-size:.74rem;color:var(--mut)}
+.vorgang{border-bottom:1px solid var(--linie);padding:13px 0}
+.vorgang .k{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.vorgang .nr{font-family:var(--mono);font-weight:500}
+.vorgang .w{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.vorgang .m{font-size:.82rem;color:var(--mut);margin-top:3px}
+.vorgang .eil{color:var(--rot);font-weight:500}
+.vorgang details{margin-top:8px}
+.vorgang summary{font-size:.85rem;color:var(--blau);cursor:pointer}
+.vorgang pre{background:#f6f7f8;border:1px solid var(--linie);padding:10px;overflow-x:auto;
+font-family:var(--mono);font-size:.74rem;line-height:1.45;margin:8px 0 0;white-space:pre-wrap;word-break:break-word}
+.mail{border-bottom:1px solid var(--linie);padding:13px 0}
+.mail .an{font-family:var(--mono);font-size:.76rem;color:var(--mut)}
+.mail .be{font-weight:500;margin:2px 0 4px}
+.mail .txt{font-size:.88rem;color:#3c4248;white-space:pre-wrap}
+
+/* Etikettenbogen */
+.bogen-info{padding:16px 18px 0}
+.bogen{display:grid;grid-template-columns:1fr;gap:8px;padding:14px 18px 20px}
+@media(min-width:520px){.bogen{grid-template-columns:repeat(2,1fr)}}
+.etikett{border:1px dashed var(--linie-s);padding:7px;display:flex;gap:8px;align-items:center;background:#fff}
+.etikett svg{width:62px;height:62px;flex:none}
+.etikett .e-t{min-width:0;font-size:.62rem;line-height:1.35}
+.etikett .e-t .sn{font-family:var(--mono);font-size:.78rem;font-weight:600}
+.etikett .e-t .ty{color:#3c4248}
+.etikett .e-t .u{font-family:var(--mono);color:#6b7076;word-break:break-all;font-size:.52rem;margin-top:2px}
+.etikett .e-t .zw{color:#6b7076}
+
+@media print{
+body{background:#fff}
+.app{max-width:none;padding:0;box-shadow:none}
+.kopf,.leiste,.bogen-info .btn,.nicht-drucken{display:none!important}
+@page{size:A4;margin:9mm}
+.bogen{grid-template-columns:repeat(3,63.5mm);gap:0;padding:0}
+.etikett{height:33.9mm;border:1px dashed #ccc;break-inside:avoid}
+.etikett svg{width:25mm;height:25mm}
+}
+
+/* ===== Website HerstellerXY ===== */
+:root{
+--nacht:#101519; --nacht-2:#1b232a; --stahl:#53606b;
+--blau:#1f5c8b; --blau-d:#174668; --blau-h:#2d79b0;
+--ink:#14181c; --mut:#6b7076; --flaeche:#eceef0; --linie:#dcdee2; --linie-s:#c3c6cb;
+--riss:#7d96ab;
+}
+body{background:#fff}
+.breit{max-width:1140px;margin:0 auto;padding:0 24px}
+.schmal{max-width:760px;margin:0 auto;padding:0 24px}
+
+/* Kopf der Website */
+.sk{position:sticky;top:0;z-index:50;background:var(--nacht);color:#fff}
+.sk .innen{max-width:1140px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:26px;min-height:66px}
+.sk .logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:#fff;flex:none}
+.sk .logo svg{display:block;flex:none}
+.sk .logo .wort{font-weight:600;font-size:1.06rem;letter-spacing:.01em;line-height:1.1}
+.sk .logo .wort span{display:block;font-family:var(--mono);font-size:.6rem;font-weight:400;color:#8ea2b3;letter-spacing:.06em;margin-top:2px}
+.sk nav{display:flex;gap:4px;margin-left:auto;align-items:center}
+.sk nav a{color:#c5d0d9;text-decoration:none;font-size:.93rem;padding:9px 12px;border-radius:2px}
+.sk nav a:hover{color:#fff;background:rgba(255,255,255,.07)}
+.sk nav a.aktiv{color:#fff;box-shadow:inset 0 -2px 0 var(--blau-h)}
+.sk nav a.cta{background:var(--blau);color:#fff;padding:10px 15px;font-weight:500}
+.sk nav a.cta:hover{background:var(--blau-h)}
+.sk .burger{display:none;margin-left:auto;background:transparent;border:1px solid #3a454e;color:#fff;
+height:42px;width:46px;border-radius:2px;cursor:pointer;font-size:1.1rem;line-height:1}
+@media(max-width:860px){
+.sk nav{position:absolute;top:66px;left:0;right:0;background:var(--nacht-2);flex-direction:column;
+align-items:stretch;gap:0;padding:6px 16px 14px;display:none;border-top:1px solid #2b353d}
+.sk nav.offen{display:flex}
+.sk nav a{padding:13px 6px;border-bottom:1px solid #2b353d}
+.sk nav a.cta{margin-top:10px;text-align:center;border-bottom:0}
+.sk .burger{display:block}
+}
+
+/* Startseite */
+.hero{background:var(--nacht);color:#fff;overflow:hidden;position:relative}
+.hero .innen{max-width:1140px;margin:0 auto;padding:54px 24px 48px;display:flex;gap:44px;align-items:center}
+.hero .text{flex:1 1 440px;min-width:0}
+.hero .riss{flex:0 1 520px;min-width:0}
+.hero .riss svg{width:100%;height:auto;display:block}
+.hero h1{font-size:2.6rem;line-height:1.1;margin:0 0 16px;font-weight:600;max-width:15ch}
+.hero p{color:#b9c6d1;font-size:1.06rem;max-width:46ch;margin:0 0 26px}
+.hero .knoepfe{display:flex;gap:12px;flex-wrap:wrap}
+.hero .k1,.hero .k2{display:inline-flex;align-items:center;height:50px;padding:0 22px;border-radius:2px;
+text-decoration:none;font-weight:500;font-size:1rem}
+.hero .k1{background:var(--blau);color:#fff}
+.hero .k1:hover{background:var(--blau-h)}
+.hero .k2{border:1px solid #46525c;color:#dbe4ea}
+.hero .k2:hover{border-color:#8ea2b3}
+@media(max-width:900px){.hero .innen{flex-direction:column;align-items:flex-start;gap:30px;padding:36px 24px 34px}
+.hero h1{font-size:2rem}.hero .riss{width:100%;flex:none}}
+
+.band{background:var(--flaeche);border-bottom:1px solid var(--linie)}
+.band .innen{max-width:1140px;margin:0 auto;padding:18px 24px;display:flex;flex-wrap:wrap;gap:8px 44px}
+.band div{display:flex;align-items:baseline;gap:9px}
+.band b{font-family:var(--mono);font-size:1.22rem;font-weight:600;font-variant-numeric:tabular-nums}
+.band span{font-size:.84rem;color:var(--stahl)}
+
+section.rubrik{padding:54px 0}
+section.rubrik + section.rubrik{border-top:1px solid var(--linie)}
+.rubrik h2{font-size:1.75rem;margin:0 0 8px;font-weight:600}
+.rubrik .vor{color:var(--mut);max-width:60ch;margin:0 0 26px;font-size:1.02rem}
+
+.reihe{display:flex;flex-wrap:wrap;gap:20px}
+.karte{flex:1 1 300px;border:1px solid var(--linie);border-top:3px solid var(--blau);padding:20px;background:#fff;
+display:flex;flex-direction:column}
+.karte h3{font-size:1.14rem;margin:0 0 3px;font-weight:600}
+.karte .rolle{font-size:.82rem;color:var(--mut);margin-bottom:12px}
+.karte p{font-size:.93rem;color:#3c4248;margin:0 0 14px}
+.karte dl{margin:0 0 16px;font-size:.86rem}
+.karte dl div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--linie);padding:5px 0}
+.karte dt{color:var(--mut)}
+.karte dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.karte .unten{margin-top:auto}
+.karte a.mehr{color:var(--blau);text-decoration:none;font-weight:500;font-size:.93rem}
+.karte a.mehr:hover{text-decoration:underline}
+
+.service{display:flex;flex-wrap:wrap;gap:20px}
+.service .haupt{flex:2 1 460px;background:var(--nacht);color:#fff;padding:26px 26px 28px;min-width:0}
+.service .haupt h3{font-size:1.3rem;margin:0 0 8px;font-weight:600}
+.service .haupt p{color:#b9c6d1;font-size:.97rem;margin:0 0 18px;max-width:52ch}
+.service .haupt .schritte{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 22px;padding:0;list-style:none}
+.service .haupt .schritte li{flex:1 1 150px;border-top:1px solid #39444d;padding-top:10px;font-size:.88rem;color:#dbe4ea}
+.service .haupt .schritte b{display:block;font-family:var(--mono);font-size:.72rem;color:#8ea2b3;margin-bottom:4px}
+.service .neben{flex:1 1 260px;display:flex;flex-direction:column;gap:20px}
+.service .neben .karte{flex:1 1 auto;border-top-color:var(--stahl)}
+
+.kontakt{display:flex;flex-wrap:wrap;gap:30px}
+.kontakt .sp{flex:1 1 240px}
+.kontakt h3{font-size:1rem;margin:0 0 7px;font-weight:600}
+.kontakt p{font-size:.95rem;margin:0 0 4px;color:#3c4248}
+.kontakt a{color:var(--blau)}
+.kontakt .mono{font-family:var(--mono);font-size:.95rem}
+
+.sf{background:var(--nacht);color:#9fb0bd;margin-top:0;padding:38px 0 30px;font-size:.88rem}
+.sf .innen{max-width:1140px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;gap:30px}
+.sf .sp{flex:1 1 210px}
+.sf h4{color:#fff;font-size:.9rem;margin:0 0 10px;font-weight:600}
+.sf a{color:#9fb0bd;text-decoration:none;display:block;padding:3px 0}
+.sf a:hover{color:#fff}
+.sf .recht{border-top:1px solid #2b353d;margin-top:26px;padding-top:16px;font-size:.8rem;color:#73858f}
+
+/* Portalbereich innerhalb der Website */
+.portalseite{background:var(--flaeche);padding:0 0 46px;border-top:1px solid var(--linie)}
+.krumen{max-width:620px;margin:0 auto;padding:13px 18px 12px;font-size:.82rem;color:var(--stahl);
+display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.krumen a{color:var(--stahl);text-decoration:none}
+.krumen a:hover{color:var(--blau);text-decoration:underline}
+.krumen .pf{color:#aab3bb}
+.krumen .jetzt{color:var(--ink);font-family:var(--mono);font-size:.78rem}
+.app{max-width:620px;margin:0 auto;background:#fff;min-height:0;position:relative;
+border:1px solid var(--linie);padding-bottom:18px}
+.portal-aktiv .app{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+.leiste .innen{max-width:620px}
+@media(max-width:620px){.krumen{padding:11px 16px 10px}.app{border-left:0;border-right:0}}
+
+/* Einstieg in das Portal */
+.einstieg{background:#fff;border:1px solid var(--linie);border-top:3px solid var(--blau);padding:22px;margin-bottom:20px}
+.einstieg h2{font-size:1.3rem;margin:0 0 6px}
+.einstieg p{color:#3c4248;font-size:.96rem;max-width:58ch}
+.wahlzeile{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.wahlzeile a{display:inline-flex;align-items:center;height:48px;padding:0 18px;border-radius:2px;
+text-decoration:none;font-weight:500}
+.wahlzeile .haupt{background:var(--blau);color:#fff}
+.wahlzeile .haupt:hover{background:var(--blau-h)}
+.wahlzeile .neben{border:1px solid var(--linie-s);color:var(--ink)}
+.wahlzeile .neben:hover{border-color:var(--blau);color:var(--blau)}
+
+/* Hinweisstreifen Prototyp */
+.proto{background:#2b353d;color:#cfd8de;font-size:.8rem}
+.proto .innen{max-width:1140px;margin:0 auto;padding:8px 24px;display:flex;gap:10px;align-items:center}
+.proto b{color:#fff;font-weight:600}
+.proto .pkt{width:7px;height:7px;border-radius:50%;background:#d08a2a;flex:none}
+
+/* interner Bereich */
+.intern-kopf{background:#39434b;color:#fff;font-size:.82rem}
+.intern-kopf .innen{max-width:620px;margin:0 auto;padding:9px 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.intern-kopf a{color:#c6d2da}
+.intern-kopf b{font-weight:600}
+
+@media print{
+.sk,.sf,.proto,.krumen,.intern-kopf,.leiste{display:none!important}
+.portalseite{background:#fff;padding:0;border:0}
+.app{border:0;max-width:none;padding:0}
+}
+
+/* Chipreihe innerhalb der Portalspalte halten */
+.chips{margin:0;padding:2px 18px 12px}
+.app{overflow-x:hidden}
+
+/* Einstiegsseite auf breiten Schirmen zweispaltig */
+@media(min-width:820px){
+.app.weit{max-width:900px}
+.app.weit .block{padding:22px 22px 0}
+.app.weit .wandreihe{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+.app.weit .wand{margin-bottom:0}
+.krumen.weit{max-width:900px}
+}
+
+/* Piktogramm in der Teilezeile */
+.teil{grid-template-columns:4px 40px 1fr auto}
+.teil .strip{grid-row:1/3}
+.teil .pik{grid-row:1/2;display:flex;justify-content:center;padding-top:13px;color:#8d959d}
+.teil .pik svg{width:26px;height:26px}
+.teil .aktion{grid-column:3/5}
+.teil.aus .pik{color:#b9bfc4}
+.teil .meta .vpe{color:#3c4248}
+.teil .meta .umbau-m{color:var(--warn);border:1px solid #e0cba4;background:#fff;padding:1px 5px;border-radius:2px;font-size:.72rem}
+.teil .preis .jestueck{display:block;font-family:var(--sans);font-size:.7rem;font-weight:400;color:var(--mut)}
+.teil .schrittweite{font-size:.74rem;color:var(--mut);margin-left:2px}
+.zukauf{margin-top:6px;background:#f2f4f6;border-left:3px solid var(--stahl);padding:8px 10px;font-size:.82rem;color:#3c4248}
+.zukauf a{color:var(--blau)}
+
+/* Abschnitte in der Teileliste */
+.abschnitt{padding:20px 18px 10px}
+.abschnitt h2{font-size:1.02rem;margin:0 0 3px}
+.abschnitt p{font-size:.85rem;color:var(--mut);margin:0}
+.abschnitt.trenner{border-top:1px solid var(--linie);margin-top:8px;padding-top:18px}
+.umbau{margin:14px 18px 0;background:#f6f1e6;border-left:4px solid #b08436;padding:11px 13px;font-size:.86rem;color:#4a4136}
+.umbau b{color:#7a5a1d}
+.massstab{display:inline-block;margin-top:6px;font-family:var(--mono);font-size:.74rem;color:var(--stahl)}
+
+/* interne Seiten */
+.csv{background:#f6f7f8;border:1px solid var(--linie);padding:11px;overflow-x:auto;
+font-family:var(--mono);font-size:.74rem;line-height:1.6;white-space:pre;margin:8px 0 0}
+.klein{font-size:.87rem;color:#3c4248}
+.app ul.klein{padding-left:18px}
+.app ul.klein li{margin-bottom:5px}
+table.prot{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:8px}
+table.prot th{text-align:left;font-family:var(--mono);font-size:.7rem;color:var(--mut);
+border-bottom:1.5px solid var(--ink);padding:5px 8px 5px 0}
+table.prot td{border-bottom:1px solid var(--linie);padding:6px 8px 6px 0;vertical-align:top}
+table.prot td.z{font-family:var(--mono);white-space:nowrap;color:var(--mut);width:52px}
+table.prot td.art{font-family:var(--mono);font-size:.74rem;color:var(--blau);white-space:nowrap;width:92px}
+
+/* Eilzuschlag */
+.zwischen{display:flex;justify-content:space-between;gap:12px;padding:7px 0 0;font-size:.92rem;color:#3c4248}
+.zwischen .w{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.zwischen.eil{color:var(--warn)}
+.summe{border-top:1px solid var(--linie);margin-top:7px}
+.wahl label small{display:block;font-size:.72rem;color:var(--mut);font-weight:400;margin-top:2px}
+.wahl label:has(input:checked) small{color:var(--blau)}
+
+</style>
+</head>
+<body>
+
+<div class="proto"><div class="innen"><span class="pkt"></span>
+<b>Prototyp.</b> Erfundenes Unternehmen, erfundene Daten. Bestellungen lösen nichts aus, es werden keine Mails verschickt.</div></div>
+
+<header class="sk"><div class="innen">
+  <a class="logo" href="#/">
+    <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+      <rect width="34" height="34" rx="2" fill="#1f5c8b"/>
+      <circle cx="17" cy="17" r="10.5" fill="none" stroke="#fff" stroke-width="1.6"/>
+      <circle cx="17" cy="17" r="3.6" fill="none" stroke="#fff" stroke-width="1.6"/>
+      <path d="M17 2.5v4M17 27.5v4M2.5 17h4M27.5 17h4" stroke="#fff" stroke-width="1.6"/>
+    </svg>
+    <span class="wort">HerstellerXY<span>Maschinenbau seit 1972</span></span>
+  </a>
+  <button class="burger" id="burger" aria-label="Menü öffnen">☰</button>
+  <nav id="hauptnav">
+    <a href="#/maschinen">Maschinen</a>
+    <a href="#/service">Service</a>
+    <a href="#/unternehmen">Unternehmen</a>
+    <a href="#/kontakt">Kontakt</a>
+    <a class="cta" href="#/ersatzteile">Ersatzteile</a>
+  </nav>
+</div></header>
+
+<main id="inhalt"></main>
+
+<footer class="sf"><div class="innen">
+  <div class="sp"><h4>HerstellerXY GmbH</h4>
+    <p style="margin:0 0 4px">Industriestraße 14<br>73527 Schwäbisch Gmünd</p>
+    <p style="margin:0">+49 7171 9280 0</p></div>
+  <div class="sp"><h4>Maschinen</h4>
+    <a href="#/maschinen">HXY-120 Handschleifer</a>
+    <a href="#/maschinen">HXY-240 Kantenschleifer</a>
+    <a href="#/maschinen">HXY-320 Doppelschleifer</a></div>
+  <div class="sp"><h4>Service</h4>
+    <a href="#/ersatzteile">Ersatzteile bestellen</a>
+    <a href="#/ersatzteile/suche">Maschine suchen</a>
+    <a href="#/service">Wartung und Schulung</a>
+    <a href="#/intern/bestellungen">Interner Bereich</a></div>
+  <div class="sp"><h4>Rechtliches</h4>
+    <a href="#/unternehmen">Impressum</a>
+    <a href="#/unternehmen">Datenschutz</a>
+    <a href="#/maschinen">Konformität nach (EU) 2023/1230</a></div>
+  <div class="recht" style="flex-basis:100%">HerstellerXY GmbH ist ein erfundenes Unternehmen. Diese Seite ist ein Prototyp für Nutzergespräche, keine echte Website. ISO 9001 und alle weiteren Angaben sind Teil des Beispiels.</div>
+</div></footer>
+
+<div class="leiste" id="leiste" hidden>
+  <div class="innen">
+    <div class="zus"><b id="l-summe">0,00 €</b><span id="l-pos">keine Position</span></div>
+    <button class="btn" id="l-btn">Zum Warenkorb</button>
+  </div>
+</div>
+
+<script>
+const DATEN = {"daten":{"hersteller":{"name":"HerstellerXY GmbH","kurz":"HerstellerXY","ort":"Schwäbisch Gmünd","mail":"ersatzteile@herstellerxy.de","tel":"+49 7171 9280 44","host":"teile.herstellerxy.de","farbe":"#1f5c8b"},"preisstand":"01.09.2026","listen":{"HXY-320":[{"n":"HXY-98566","b":"Absaugschlauch NW 100 / 2 m","g":"Absaugung","p":89.74,"l":0,"v":0,"pik":"schlauch"},{"n":"HXY-20507","b":"Absaugschlauch NW 125 / 3 m","g":"Absaugung","p":66.79,"l":1,"v":0,"pik":"schlauch"},{"n":"HXY-10857","b":"Absaugschlauch NW 160 / 2,5 m","g":"Absaugung","p":35.47,"l":0,"v":0,"pik":"schlauch"},{"n":"HXY-43392","b":"Filterelement Patrone 325 x 900","g":"Absaugung","p":60.52,"l":0,"v":1,"pik":"filter","rang":5},{"n":"HXY-88064","b":"Filterelement Taschenfilter G4","g":"Absaugung","p":44.25,"l":1,"v":0,"pik":"filter"},{"n":"HXY-80350","b":"Filterelement Taschenfilter M5","g":"Absaugung","p":36.51,"l":1,"v":0,"pik":"filter"},{"n":"HXY-81517","b":"Lüftergitter 120 x 120","g":"Absaugung","p":19.58,"l":1,"v":0,"pik":"gitter"},{"n":"HXY-16755","b":"Lüftergitter 160 x 160","g":"Absaugung","p":12.43,"l":1,"v":0,"pik":"gitter"},{"n":"HXY-25334","b":"Lüfterrad Ø 160 mm","g":"Absaugung","p":216.68,"l":1,"v":0,"pik":"luefter"},{"n":"HXY-85277","b":"Lüfterrad Ø 200 mm","g":"Absaugung","p":72.29,"l":0,"v":0,"pik":"luefter"},{"n":"HXY-18613","b":"Schlauchschelle NW 100","g":"Absaugung","p":9.25,"l":1,"v":0,"pik":"schelle","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-75425","b":"Schlauchschelle NW 125","g":"Absaugung","p":3.96,"l":1,"v":0,"pik":"schelle","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-73040","b":"Schlauchschelle NW 160","g":"Absaugung","p":6.03,"l":0,"v":0,"pik":"schelle","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-64670","b":"Staubsack 100 l","g":"Absaugung","p":4.24,"l":0,"v":1,"pik":"sack","vpe":10,"vt":"Packung zu 10 Stück","rang":6},{"n":"HXY-14964","b":"Staubsack 140 l","g":"Absaugung","p":14.79,"l":1,"v":0,"pik":"sack","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-67094","b":"Staubsack 60 l","g":"Absaugung","p":15.59,"l":1,"v":0,"pik":"sack","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-23842","b":"Zyklonabscheider Stufe 1","g":"Absaugung","p":513.86,"l":1,"v":0,"pik":"zyklon"},{"n":"HXY-57499","b":"Zyklonabscheider Stufe 2","g":"Absaugung","p":886.49,"l":1,"v":0,"pik":"zyklon"},{"n":"HXY-15843","b":"Antriebsmotor 4,0 kW 400 V","g":"Antrieb","p":1600.57,"l":1,"v":0,"pik":"motor","fr":{"f":"Nordmotor Antriebstechnik","t":"NMG-915"}},{"n":"HXY-39935","b":"Antriebsmotor 7,5 kW 400 V","g":"Antrieb","p":1871.14,"l":0,"v":0,"pik":"motor","fr":{"f":"Nordmotor Antriebstechnik","t":"NMG-890"}},{"n":"HXY-29727","b":"Keilriemen SPZ 1180","g":"Antrieb","p":47.25,"l":1,"v":1,"pik":"riemen","rang":1},{"n":"HXY-55934","b":"Keilriemen SPZ 950","g":"Antrieb","p":59.78,"l":0,"v":0,"pik":"riemen"},{"n":"HXY-29439","b":"Keilriemen XPA 1250","g":"Antrieb","p":21.01,"l":1,"v":0,"pik":"riemen"},{"n":"HXY-54377","b":"Kohlebürste 5 x 8 x 16","g":"Antrieb","p":21.81,"l":1,"v":1,"pik":"buerste","vpe":4,"vt":"Satz zu 4 Stück","rang":2},{"n":"HXY-21568","b":"Kohlebürste 6,3 x 10 x 16","g":"Antrieb","p":19.82,"l":1,"v":0,"pik":"buerste","vpe":4,"vt":"Satz zu 4 Stück"},{"n":"HXY-39127","b":"Kohlebürste 8 x 12 x 20","g":"Antrieb","p":10.33,"l":0,"v":0,"pik":"buerste","vpe":4,"vt":"Satz zu 4 Stück"},{"n":"HXY-68348","b":"Kupplungselement GS 19 / 64 Sh","g":"Antrieb","p":127.56,"l":1,"v":0,"pik":"kupplung"},{"n":"HXY-26624","b":"Kupplungselement ROTEX 24 / 92 Sh","g":"Antrieb","p":78.99,"l":1,"v":0,"pik":"kupplung"},{"n":"HXY-70640","b":"Passfeder A 10 x 8 x 40","g":"Antrieb","p":5.89,"l":1,"v":0,"pik":"passfeder","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-27068","b":"Passfeder A 12 x 8 x 50","g":"Antrieb","p":8.67,"l":1,"v":0,"pik":"passfeder","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-91195","b":"Passfeder A 8 x 7 x 32","g":"Antrieb","p":3.87,"l":1,"v":0,"pik":"passfeder","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-47519","b":"Planetengetriebe i = 10","g":"Antrieb","p":1885.82,"l":1,"v":0,"pik":"getriebe","fr":{"f":"Nordmotor Antriebstechnik","t":"NMG-578"}},{"n":"HXY-24293","b":"Planetengetriebe i = 25","g":"Antrieb","p":1476.16,"l":1,"v":0,"pik":"getriebe","fr":{"f":"Nordmotor Antriebstechnik","t":"NMG-496"}},{"n":"HXY-43829","b":"Planetengetriebe i = 50","g":"Antrieb","p":794.9,"l":1,"v":0,"pik":"getriebe","fr":{"f":"Nordmotor Antriebstechnik","t":"NMG-348"}},{"n":"HXY-75617","b":"Riemenspanner links","g":"Antrieb","p":174.98,"l":1,"v":0,"pik":"hebel"},{"n":"HXY-86290","b":"Riemenspanner rechts","g":"Antrieb","p":52.96,"l":1,"v":0,"pik":"hebel"},{"n":"HXY-72767","b":"Rillenkugellager 16008","g":"Antrieb","p":73.79,"l":1,"v":1,"pik":"lager","rang":4},{"n":"HXY-83062","b":"Rillenkugellager 6002 2Z","g":"Antrieb","p":48.65,"l":1,"v":0,"pik":"lager"},{"n":"HXY-91098","b":"Rillenkugellager 6003 2RS","g":"Antrieb","p":92.44,"l":1,"v":0,"pik":"lager"},{"n":"HXY-53375","b":"Rillenkugellager 6004 2RS","g":"Antrieb","p":48.35,"l":1,"v":0,"pik":"lager"},{"n":"HXY-38154","b":"Rillenkugellager 6006 2Z","g":"Antrieb","p":56.1,"l":0,"v":0,"pik":"lager"},{"n":"HXY-39895","b":"Rillenkugellager 6008 2RS","g":"Antrieb","p":47.19,"l":1,"v":0,"pik":"lager"},{"n":"HXY-70129","b":"Rillenkugellager 6204 2RS","g":"Antrieb","p":43.64,"l":1,"v":0,"pik":"lager"},{"n":"HXY-54778","b":"Rillenkugellager 6205 2Z","g":"Antrieb","p":8.72,"l":1,"v":0,"pik":"lager"},{"n":"HXY-45967","b":"Rillenkugellager 6206 2RS","g":"Antrieb","p":13.85,"l":1,"v":0,"pik":"lager"},{"n":"HXY-99370","b":"Rillenkugellager 6208 2Z","g":"Antrieb","p":27.54,"l":1,"v":0,"pik":"lager"},{"n":"HXY-39520","b":"Rillenkugellager 6306 2Z","g":"Antrieb","p":77.83,"l":1,"v":0,"pik":"lager"},{"n":"HXY-55775","b":"Schmiernippel M10 90 Grad","g":"Antrieb","p":4.65,"l":1,"v":0,"pik":"nippel","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-19695","b":"Schmiernippel M8 45 Grad","g":"Antrieb","p":4.03,"l":1,"v":0,"pik":"nippel","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-22666","b":"Sicherungsring 25 innen","g":"Antrieb","p":2.72,"l":1,"v":0,"pik":"sring","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-89271","b":"Sicherungsring 30 außen","g":"Antrieb","p":2.85,"l":0,"v":0,"pik":"sring","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-53068","b":"Sicherungsring 35 innen","g":"Antrieb","p":1.47,"l":1,"v":0,"pik":"sring","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-15598","b":"Sicherungsring 40 außen","g":"Antrieb","p":0.91,"l":0,"v":0,"pik":"sring","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-43945","b":"Sicherungsring 52 außen","g":"Antrieb","p":2.32,"l":0,"v":0,"pik":"sring","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-31382","b":"Sicherungsring 62 innen","g":"Antrieb","p":2.92,"l":1,"v":0,"pik":"sring","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-41130","b":"Wellendichtring 30 x 52 x 7","g":"Antrieb","p":8.38,"l":1,"v":1,"pik":"dicht","vpe":10,"vt":"Packung zu 10 Stück","rang":3},{"n":"HXY-50151","b":"Wellendichtring 35 x 62 x 8","g":"Antrieb","p":8.82,"l":1,"v":0,"pik":"dicht","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-81559","b":"Wellendichtring 40 x 62 x 7","g":"Antrieb","p":20.26,"l":1,"v":0,"pik":"dicht","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-72535","b":"Wellendichtring 45 x 65 x 8","g":"Antrieb","p":3.74,"l":1,"v":0,"pik":"dicht","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-38228","b":"Wellendichtring 55 x 80 x 8","g":"Antrieb","p":11.46,"l":1,"v":0,"pik":"dicht","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-37161","b":"Zahnriemen AT10 980","g":"Antrieb","p":48.83,"l":1,"v":0,"pik":"riemen"},{"n":"HXY-88195","b":"Zahnriemen HTD 5M 600","g":"Antrieb","p":74.03,"l":1,"v":0,"pik":"riemen"},{"n":"HXY-67466","b":"Zahnriemenscheibe AT10 z25","g":"Antrieb","p":204.68,"l":1,"v":0,"pik":"scheibe"},{"n":"HXY-61413","b":"Zahnriemenscheibe HTD 5M z32","g":"Antrieb","p":134.9,"l":0,"v":0,"pik":"scheibe"},{"n":"HXY-64632","b":"Zahnriemenscheibe HTD 8M z28","g":"Antrieb","p":183.71,"l":1,"v":0,"pik":"scheibe"},{"n":"HXY-56045","b":"Dichtschnur Ø 10 / 3 m","g":"Gehäuse","p":5.61,"l":1,"v":0,"pik":"dicht"},{"n":"HXY-86012","b":"Dichtschnur Ø 6 / 5 m","g":"Gehäuse","p":19.69,"l":1,"v":0,"pik":"dicht"},{"n":"HXY-31819","b":"Faltenbalg 300 mm","g":"Gehäuse","p":236.78,"l":1,"v":0,"pik":"balg"},{"n":"HXY-52227","b":"Faltenbalg 500 mm","g":"Gehäuse","p":284.29,"l":1,"v":0,"pik":"balg"},{"n":"HXY-58123","b":"Führungsschiene Größe 20 / 400","g":"Gehäuse","p":241.35,"l":1,"v":0,"pik":"schiene"},{"n":"HXY-47404","b":"Führungsschiene Größe 25 / 600","g":"Gehäuse","p":154.36,"l":1,"v":0,"pik":"schiene"},{"n":"HXY-46480","b":"Scheibe DIN 125 10,5","g":"Gehäuse","p":0.2,"l":1,"v":0,"pik":"uscheibe","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-30877","b":"Scheibe DIN 125 6,4","g":"Gehäuse","p":0.37,"l":0,"v":0,"pik":"uscheibe","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-15213","b":"Scheibe DIN 125 8,4","g":"Gehäuse","p":0.18,"l":1,"v":0,"pik":"uscheibe","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-55398","b":"Schutzglas 200 x 100","g":"Gehäuse","p":22.17,"l":1,"v":0,"pik":"glas","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-94543","b":"Schutzglas 300 x 150","g":"Gehäuse","p":59.51,"l":1,"v":0,"pik":"glas","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-80780","b":"Schutzhaube Standard","g":"Gehäuse","p":120.79,"l":1,"v":0,"pik":"haube"},{"n":"HXY-37754","b":"Schutzhaube rechts","g":"Gehäuse","p":302.8,"l":0,"v":0,"pik":"haube"},{"n":"HXY-79695","b":"Sechskantmutter M10","g":"Gehäuse","p":0.69,"l":1,"v":0,"pik":"mutter","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-53800","b":"Sechskantmutter M12","g":"Gehäuse","p":0.28,"l":0,"v":0,"pik":"mutter","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-18622","b":"Sechskantmutter M6","g":"Gehäuse","p":0.52,"l":0,"v":0,"pik":"mutter","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-18631","b":"Spannhebel M10 x 50","g":"Gehäuse","p":68.96,"l":1,"v":0,"pik":"hebel"},{"n":"HXY-22619","b":"Spannhebel M12 x 60","g":"Gehäuse","p":35.23,"l":1,"v":0,"pik":"hebel"},{"n":"HXY-65760","b":"Spannhebel lang","g":"Gehäuse","p":25.86,"l":1,"v":0,"pik":"hebel"},{"n":"HXY-13145","b":"Stellfuß M12 / Ø 60","g":"Gehäuse","p":35.09,"l":1,"v":0,"pik":"fuss"},{"n":"HXY-15515","b":"Stellfuß M16 / Ø 80","g":"Gehäuse","p":35.25,"l":1,"v":0,"pik":"fuss"},{"n":"HXY-32211","b":"Zylinderschraube M10 x 30","g":"Gehäuse","p":1.99,"l":1,"v":0,"pik":"schraube","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-20926","b":"Zylinderschraube M10 x 60","g":"Gehäuse","p":1.17,"l":1,"v":0,"pik":"schraube","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-35280","b":"Zylinderschraube M12 x 40","g":"Gehäuse","p":1.93,"l":0,"v":0,"pik":"schraube","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-63734","b":"Zylinderschraube M5 x 16","g":"Gehäuse","p":1.3,"l":1,"v":0,"pik":"schraube","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-23666","b":"Zylinderschraube M6 x 20","g":"Gehäuse","p":1.79,"l":1,"v":0,"pik":"schraube","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-69745","b":"Zylinderschraube M8 x 40","g":"Gehäuse","p":1.23,"l":1,"v":0,"pik":"schraube","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-15836","b":"Druckspeicher 0,75 l","g":"Hydraulik","p":547.01,"l":1,"v":0,"pik":"speicher","fr":{"f":"Pressmann Hydraulik","t":"PH-944"}},{"n":"HXY-30037","b":"Druckspeicher 1,4 l","g":"Hydraulik","p":702.94,"l":1,"v":0,"pik":"speicher","fr":{"f":"Pressmann Hydraulik","t":"PH-699"}},{"n":"HXY-63097","b":"Hydraulikpumpe 2,2 cm³","g":"Hydraulik","p":1195.0,"l":1,"v":0,"pik":"pumpe","fr":{"f":"Pressmann Hydraulik","t":"PH-685"}},{"n":"HXY-26053","b":"Hydraulikpumpe 4,5 cm³","g":"Hydraulik","p":505.22,"l":1,"v":0,"pik":"pumpe","fr":{"f":"Pressmann Hydraulik","t":"PH-665"}},{"n":"HXY-58830","b":"Hydraulikschlauch NW 10 / 1,2 m","g":"Hydraulik","p":60.99,"l":1,"v":1,"pik":"schlauch","rang":9},{"n":"HXY-95997","b":"Hydraulikschlauch NW 12 / 2,0 m","g":"Hydraulik","p":84.74,"l":0,"v":0,"pik":"schlauch"},{"n":"HXY-95729","b":"Hydraulikschlauch NW 16 / 0,8 m","g":"Hydraulik","p":83.33,"l":1,"v":0,"pik":"schlauch"},{"n":"HXY-36529","b":"Hydraulikventil 4/2 Wege 24 V","g":"Hydraulik","p":258.78,"l":0,"v":0,"pik":"ventil","fr":{"f":"Pressmann Hydraulik","t":"PH-933"}},{"n":"HXY-33332","b":"Hydraulikventil 4/3 Wege 24 V","g":"Hydraulik","p":279.0,"l":1,"v":0,"pik":"ventil","fr":{"f":"Pressmann Hydraulik","t":"PH-247"}},{"n":"HXY-27224","b":"Hydraulikventil Drosselrückschlag","g":"Hydraulik","p":122.45,"l":1,"v":0,"pik":"ventil","fr":{"f":"Pressmann Hydraulik","t":"PH-721"}},{"n":"HXY-89533","b":"Manometer 0 bis 100 bar","g":"Hydraulik","p":35.1,"l":1,"v":0,"pik":"anzeige"},{"n":"HXY-39339","b":"Manometer 0 bis 250 bar","g":"Hydraulik","p":52.02,"l":1,"v":0,"pik":"anzeige"},{"n":"HXY-66564","b":"O-Ring 12 x 2 NBR","g":"Hydraulik","p":2.44,"l":1,"v":1,"pik":"dicht","vpe":25,"vt":"Beutel zu 25 Stück","rang":8},{"n":"HXY-30616","b":"O-Ring 20 x 2,5 NBR","g":"Hydraulik","p":2.73,"l":0,"v":0,"pik":"dicht","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-73802","b":"O-Ring 25 x 3 NBR","g":"Hydraulik","p":2.21,"l":1,"v":0,"pik":"dicht","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-84407","b":"O-Ring 32 x 3 FKM","g":"Hydraulik","p":2.74,"l":1,"v":0,"pik":"dicht","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-93353","b":"Abrichtdiamant 0,5 ct","g":"Schleifaggregat","p":144.39,"l":1,"v":0,"pik":"diamant"},{"n":"HXY-38045","b":"Abrichtdiamant 1,0 ct","g":"Schleifaggregat","p":160.53,"l":1,"v":0,"pik":"diamant"},{"n":"HXY-42299","b":"Bandlaufrolle Ø 100 zylindrisch","g":"Schleifaggregat","p":82.74,"l":0,"v":0,"pik":"rolle"},{"n":"HXY-18534","b":"Bandlaufrolle Ø 50 ballig","g":"Schleifaggregat","p":83.38,"l":1,"v":0,"pik":"rolle"},{"n":"HXY-79879","b":"Bandlaufrolle Ø 80 ballig","g":"Schleifaggregat","p":81.41,"l":1,"v":0,"pik":"rolle"},{"n":"HXY-67710","b":"Druckfeder Ø 10 x 30","g":"Schleifaggregat","p":2.62,"l":0,"v":1,"pik":"feder","vpe":5,"vt":"Beutel zu 5 Stück","rang":11},{"n":"HXY-86643","b":"Druckfeder Ø 12 x 40","g":"Schleifaggregat","p":4.91,"l":1,"v":0,"pik":"feder","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-95758","b":"Druckfeder Ø 16 x 50","g":"Schleifaggregat","p":6.2,"l":1,"v":0,"pik":"feder","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-40367","b":"Druckfeder Ø 18 x 60","g":"Schleifaggregat","p":7.92,"l":1,"v":0,"pik":"feder","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-68055","b":"Kontaktrolle Ø 200 Gummi 70 Sh","g":"Schleifaggregat","p":133.19,"l":1,"v":0,"pik":"rolle"},{"n":"HXY-82370","b":"Kontaktrolle Ø 250 Gummi 50 Sh","g":"Schleifaggregat","p":337.51,"l":1,"v":0,"pik":"rolle"},{"n":"HXY-24939","b":"Schleifband 100 x 2000 K40","g":"Schleifaggregat","p":9.57,"l":0,"v":1,"pik":"band","vpe":10,"vt":"Packung zu 10 Stück","rang":0},{"n":"HXY-71663","b":"Schleifband 100 x 2000 K80","g":"Schleifaggregat","p":5.91,"l":0,"v":0,"pik":"band","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-68288","b":"Schleifband 100 x 2500 K120","g":"Schleifaggregat","p":6.64,"l":0,"v":0,"pik":"band","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-45664","b":"Schleifband 100 x 2500 K60","g":"Schleifaggregat","p":15.74,"l":1,"v":0,"pik":"band","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-89463","b":"Schleifband 50 x 1500 K60","g":"Schleifaggregat","p":5.56,"l":1,"v":0,"pik":"band","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-59911","b":"Schleifband 50 x 1500 K80","g":"Schleifaggregat","p":5.22,"l":1,"v":0,"pik":"band","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-52103","b":"Schleifband 80 x 2000 K60","g":"Schleifaggregat","p":13.49,"l":0,"v":0,"pik":"band","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-30073","b":"Schleifscheibe Ø 200 x 25 K60","g":"Schleifaggregat","p":80.79,"l":1,"v":1,"pik":"schleifscheibe","rang":10},{"n":"HXY-63911","b":"Schleifscheibe Ø 300 x 40 K46","g":"Schleifaggregat","p":78.44,"l":1,"v":0,"pik":"schleifscheibe"},{"n":"HXY-84245","b":"Schleifscheibe Ø 400 x 50 K36","g":"Schleifaggregat","p":82.34,"l":1,"v":0,"pik":"schleifscheibe"},{"n":"HXY-42464","b":"Spannmutter M30 x 1,5","g":"Schleifaggregat","p":33.4,"l":1,"v":0,"pik":"mutter"},{"n":"HXY-26562","b":"Spannmutter M40 x 1,5","g":"Schleifaggregat","p":21.48,"l":0,"v":0,"pik":"mutter"},{"n":"HXY-13061","b":"Werkstückauflage groß","g":"Schleifaggregat","p":137.95,"l":0,"v":0,"pik":"auflage"},{"n":"HXY-52933","b":"Werkstückauflage verstellbar","g":"Schleifaggregat","p":236.82,"l":0,"v":0,"pik":"auflage"},{"n":"HXY-57535","b":"Bedienfolie Standard","g":"Steuerung","p":145.4,"l":0,"v":0,"pik":"folie"},{"n":"HXY-66257","b":"Bedienfolie mit Handrad","g":"Steuerung","p":286.06,"l":0,"v":0,"pik":"folie"},{"n":"HXY-64006","b":"Drucktaster Not-Halt rastend","g":"Steuerung","p":23.32,"l":1,"v":0,"pik":"taster"},{"n":"HXY-48240","b":"Drucktaster Schlüsselschalter","g":"Steuerung","p":17.82,"l":0,"v":0,"pik":"taster"},{"n":"HXY-95733","b":"Drucktaster grün bündig","g":"Steuerung","p":46.8,"l":1,"v":0,"pik":"taster"},{"n":"HXY-23678","b":"Drucktaster rot erhaben","g":"Steuerung","p":39.62,"l":1,"v":0,"pik":"taster"},{"n":"HXY-92377","b":"Endschalter Federstab","g":"Steuerung","p":37.69,"l":0,"v":0,"pik":"sensor","fr":{"f":"Senstec","t":"SN-649"}},{"n":"HXY-13353","b":"Endschalter Rollenhebel","g":"Steuerung","p":42.37,"l":1,"v":0,"pik":"sensor","fr":{"f":"Senstec","t":"SN-410"}},{"n":"HXY-26055","b":"Endschalter Stößel","g":"Steuerung","p":90.69,"l":1,"v":0,"pik":"sensor","fr":{"f":"Senstec","t":"SN-861"}},{"n":"HXY-59879","b":"Feinsicherung 5 x 20 / 2 A T","g":"Steuerung","p":2.28,"l":1,"v":1,"pik":"sicherung","vpe":10,"vt":"Packung zu 10 Stück","rang":7},{"n":"HXY-71615","b":"Feinsicherung 5 x 20 / 4 A T","g":"Steuerung","p":2.32,"l":0,"v":0,"pik":"sicherung","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-15547","b":"Feinsicherung 5 x 20 / 6,3 A T","g":"Steuerung","p":0.81,"l":1,"v":0,"pik":"sicherung","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-56243","b":"Klemmbrücke 10-polig","g":"Steuerung","p":23.97,"l":1,"v":0,"pik":"klemme","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-93699","b":"Klemmbrücke 4-polig","g":"Steuerung","p":27.15,"l":0,"v":0,"pik":"klemme","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-44622","b":"Klemmbrücke 6-polig","g":"Steuerung","p":37.95,"l":0,"v":0,"pik":"klemme","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-88058","b":"Motorschutzschalter 16 bis 22 A","g":"Steuerung","p":145.23,"l":0,"v":0,"pik":"schuetz","fr":{"f":"Elkra Schaltgeräte","t":"ELK-671"}},{"n":"HXY-22869","b":"Motorschutzschalter 6,3 bis 10 A","g":"Steuerung","p":136.5,"l":0,"v":0,"pik":"schuetz","fr":{"f":"Elkra Schaltgeräte","t":"ELK-124"}},{"n":"HXY-87082","b":"Netzteil 24 V 10 A","g":"Steuerung","p":132.87,"l":1,"v":0,"pik":"netzteil","fr":{"f":"Elkra Schaltgeräte","t":"ELK-256"}},{"n":"HXY-91028","b":"Netzteil 24 V 5 A","g":"Steuerung","p":115.16,"l":0,"v":0,"pik":"netzteil","fr":{"f":"Elkra Schaltgeräte","t":"ELK-252"}},{"n":"HXY-29594","b":"Näherungsschalter M18 induktiv","g":"Steuerung","p":135.05,"l":1,"v":0,"pik":"sensor","fr":{"f":"Senstec","t":"SN-260"}},{"n":"HXY-81548","b":"Näherungsschalter M30 induktiv","g":"Steuerung","p":118.87,"l":0,"v":0,"pik":"sensor","fr":{"f":"Senstec","t":"SN-635"}},{"n":"HXY-33828","b":"Näherungsschalter M8 induktiv","g":"Steuerung","p":134.08,"l":1,"v":0,"pik":"sensor","fr":{"f":"Senstec","t":"SN-961"}},{"n":"HXY-31526","b":"Schaltschütz 24 V DC 9 A","g":"Steuerung","p":82.45,"l":0,"v":0,"pik":"schuetz","fr":{"f":"Elkra Schaltgeräte","t":"ELK-447"}},{"n":"HXY-80440","b":"Schaltschütz 400 V 3~ 18 A","g":"Steuerung","p":237.69,"l":1,"v":0,"pik":"schuetz","fr":{"f":"Elkra Schaltgeräte","t":"ELK-827"}},{"n":"HXY-92378","b":"Schaltschütz 400 V 3~ 9 A","g":"Steuerung","p":175.31,"l":1,"v":0,"pik":"schuetz","fr":{"f":"Elkra Schaltgeräte","t":"ELK-187"}},{"n":"HXY-78808","b":"Steuerleitung 12 x 0,5 / 5 m","g":"Steuerung","p":23.96,"l":0,"v":0,"pik":"kabel"},{"n":"HXY-57951","b":"Steuerleitung 4 x 0,75 / 5 m","g":"Steuerung","p":47.78,"l":1,"v":0,"pik":"kabel"},{"n":"HXY-78503","b":"Steuerleitung 7 x 0,75 / 10 m","g":"Steuerung","p":58.9,"l":1,"v":0,"pik":"kabel"}],"HXY-240":[{"n":"HXY-75449","b":"Absaugschlauch NW 160 / 2,5 m","g":"Absaugung","p":52.64,"l":1,"v":0,"pik":"schlauch"},{"n":"HXY-95280","b":"Filterelement Taschenfilter G4","g":"Absaugung","p":134.68,"l":0,"v":1,"pik":"filter","rang":5},{"n":"HXY-76785","b":"Lüftergitter 160 x 160","g":"Absaugung","p":13.65,"l":1,"v":0,"pik":"gitter"},{"n":"HXY-96047","b":"Lüfterrad Ø 200 mm","g":"Absaugung","p":231.67,"l":0,"v":0,"pik":"luefter"},{"n":"HXY-30297","b":"Schlauchschelle NW 125","g":"Absaugung","p":6.09,"l":1,"v":0,"pik":"schelle","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-45072","b":"Staubsack 100 l","g":"Absaugung","p":4.72,"l":1,"v":0,"pik":"sack","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-15798","b":"Antriebsmotor 4,0 kW 400 V","g":"Antrieb","p":1871.88,"l":1,"v":0,"pik":"motor","fr":{"f":"Nordmotor Antriebstechnik","t":"NMG-862"}},{"n":"HXY-57216","b":"Keilriemen SPA 1320","g":"Antrieb","p":37.24,"l":1,"v":1,"pik":"riemen","rang":1},{"n":"HXY-14244","b":"Kohlebürste 5 x 8 x 16","g":"Antrieb","p":14.31,"l":0,"v":1,"pik":"buerste","vpe":4,"vt":"Satz zu 4 Stück","rang":2},{"n":"HXY-30564","b":"Kohlebürste 8 x 12 x 20","g":"Antrieb","p":14.14,"l":1,"v":0,"pik":"buerste","vpe":4,"vt":"Satz zu 4 Stück"},{"n":"HXY-95948","b":"Kupplungselement ROTEX 24 / 92 Sh","g":"Antrieb","p":174.78,"l":1,"v":0,"pik":"kupplung"},{"n":"HXY-81829","b":"Passfeder A 10 x 8 x 40","g":"Antrieb","p":5.77,"l":1,"v":0,"pik":"passfeder","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-32528","b":"Planetengetriebe i = 25","g":"Antrieb","p":1321.8,"l":0,"v":0,"pik":"getriebe","fr":{"f":"Nordmotor Antriebstechnik","t":"NMG-953"}},{"n":"HXY-12456","b":"Riemenspanner rechts","g":"Antrieb","p":73.37,"l":1,"v":0,"pik":"hebel"},{"n":"HXY-44149","b":"Rillenkugellager 16008","g":"Antrieb","p":55.68,"l":0,"v":1,"pik":"lager","rang":4},{"n":"HXY-21950","b":"Rillenkugellager 6204 2RS","g":"Antrieb","p":42.06,"l":1,"v":0,"pik":"lager"},{"n":"HXY-72602","b":"Rillenkugellager 6205 2Z","g":"Antrieb","p":50.0,"l":1,"v":0,"pik":"lager"},{"n":"HXY-31856","b":"Schmiernippel M8 45 Grad","g":"Antrieb","p":3.14,"l":1,"v":0,"pik":"nippel","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-30895","b":"Sicherungsring 35 innen","g":"Antrieb","p":1.82,"l":1,"v":0,"pik":"sring","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-38655","b":"Sicherungsring 47 innen","g":"Antrieb","p":2.89,"l":1,"v":0,"pik":"sring","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-38468","b":"Wellendichtring 30 x 52 x 7","g":"Antrieb","p":19.28,"l":1,"v":1,"pik":"dicht","vpe":10,"vt":"Packung zu 10 Stück","rang":3},{"n":"HXY-58221","b":"Wellendichtring 40 x 62 x 7","g":"Antrieb","p":4.83,"l":1,"v":0,"pik":"dicht","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-19812","b":"Zahnriemen HTD 8M 1120","g":"Antrieb","p":57.51,"l":1,"v":0,"pik":"riemen"},{"n":"HXY-18523","b":"Zahnriemenscheibe AT10 z25","g":"Antrieb","p":218.43,"l":1,"v":0,"pik":"scheibe"},{"n":"HXY-61398","b":"Dichtschnur Ø 10 / 3 m","g":"Gehäuse","p":5.48,"l":1,"v":0,"pik":"dicht"},{"n":"HXY-22293","b":"Faltenbalg 500 mm","g":"Gehäuse","p":237.83,"l":1,"v":0,"pik":"balg"},{"n":"HXY-45643","b":"Scheibe DIN 125 6,4","g":"Gehäuse","p":0.45,"l":1,"v":0,"pik":"uscheibe","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-41362","b":"Schutzglas 200 x 100","g":"Gehäuse","p":15.2,"l":0,"v":0,"pik":"glas","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-32566","b":"Schutzhaube Standard","g":"Gehäuse","p":126.75,"l":1,"v":0,"pik":"haube"},{"n":"HXY-53796","b":"Sechskantmutter M10","g":"Gehäuse","p":0.45,"l":0,"v":0,"pik":"mutter","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-15623","b":"Spannhebel lang","g":"Gehäuse","p":53.52,"l":1,"v":0,"pik":"hebel"},{"n":"HXY-34871","b":"Stellfuß M12 / Ø 60","g":"Gehäuse","p":23.63,"l":1,"v":0,"pik":"fuss"},{"n":"HXY-58971","b":"Zylinderschraube M10 x 30","g":"Gehäuse","p":1.03,"l":1,"v":0,"pik":"schraube","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-90611","b":"Zylinderschraube M10 x 60","g":"Gehäuse","p":0.94,"l":1,"v":0,"pik":"schraube","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-60298","b":"Hydraulikschlauch NW 16 / 0,8 m","g":"Hydraulik","p":80.27,"l":0,"v":0,"pik":"schlauch"},{"n":"HXY-34898","b":"Hydraulikventil Drosselrückschlag","g":"Hydraulik","p":204.69,"l":0,"v":0,"pik":"ventil","fr":{"f":"Pressmann Hydraulik","t":"PH-370"}},{"n":"HXY-68606","b":"Manometer 0 bis 100 bar","g":"Hydraulik","p":26.2,"l":1,"v":0,"pik":"anzeige"},{"n":"HXY-15411","b":"O-Ring 16 x 2 NBR","g":"Hydraulik","p":2.72,"l":1,"v":0,"pik":"dicht","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-52999","b":"O-Ring 20 x 2,5 NBR","g":"Hydraulik","p":0.52,"l":1,"v":0,"pik":"dicht","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-78952","b":"Abrichtdiamant 1,0 ct","g":"Schleifaggregat","p":48.05,"l":1,"v":0,"pik":"diamant"},{"n":"HXY-78620","b":"Bandlaufrolle Ø 80 ballig","g":"Schleifaggregat","p":79.63,"l":1,"v":0,"pik":"rolle"},{"n":"HXY-17962","b":"Druckfeder Ø 10 x 30","g":"Schleifaggregat","p":4.59,"l":1,"v":0,"pik":"feder","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-31829","b":"Druckfeder Ø 12 x 40","g":"Schleifaggregat","p":9.54,"l":0,"v":0,"pik":"feder","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-32937","b":"Schleifband 100 x 2000 K80","g":"Schleifaggregat","p":10.56,"l":1,"v":1,"pik":"band","vpe":10,"vt":"Packung zu 10 Stück","rang":0},{"n":"HXY-12015","b":"Schleifband 100 x 2500 K60","g":"Schleifaggregat","p":7.84,"l":1,"v":0,"pik":"band","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-11409","b":"Schleifscheibe Ø 400 x 50 K60","g":"Schleifaggregat","p":42.0,"l":1,"v":0,"pik":"schleifscheibe"},{"n":"HXY-75747","b":"Spannmutter M30 x 1,5","g":"Schleifaggregat","p":20.27,"l":1,"v":0,"pik":"mutter"},{"n":"HXY-65640","b":"Werkstückauflage verstellbar","g":"Schleifaggregat","p":70.64,"l":1,"v":0,"pik":"auflage"},{"n":"HXY-13409","b":"Bedienfolie mit Handrad","g":"Steuerung","p":128.93,"l":0,"v":0,"pik":"folie"},{"n":"HXY-48251","b":"Drucktaster Not-Halt rastend","g":"Steuerung","p":25.27,"l":1,"v":0,"pik":"taster"},{"n":"HXY-36361","b":"Drucktaster grün bündig","g":"Steuerung","p":52.61,"l":0,"v":0,"pik":"taster"},{"n":"HXY-49135","b":"Endschalter Rollenhebel","g":"Steuerung","p":47.46,"l":1,"v":0,"pik":"sensor","fr":{"f":"Senstec","t":"SN-877"}},{"n":"HXY-74300","b":"Feinsicherung 5 x 20 / 6,3 A T","g":"Steuerung","p":2.76,"l":1,"v":0,"pik":"sicherung","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-54522","b":"Klemmbrücke 6-polig","g":"Steuerung","p":22.24,"l":0,"v":0,"pik":"klemme","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-39822","b":"Motorschutzschalter 6,3 bis 10 A","g":"Steuerung","p":178.55,"l":1,"v":0,"pik":"schuetz","fr":{"f":"Elkra Schaltgeräte","t":"ELK-449"}},{"n":"HXY-23780","b":"Netzteil 24 V 5 A","g":"Steuerung","p":174.46,"l":0,"v":0,"pik":"netzteil","fr":{"f":"Elkra Schaltgeräte","t":"ELK-699"}},{"n":"HXY-51529","b":"Näherungsschalter M30 induktiv","g":"Steuerung","p":101.31,"l":1,"v":0,"pik":"sensor","fr":{"f":"Senstec","t":"SN-718"}},{"n":"HXY-12478","b":"Schaltschütz 400 V 3~ 25 A","g":"Steuerung","p":83.37,"l":0,"v":0,"pik":"schuetz","fr":{"f":"Elkra Schaltgeräte","t":"ELK-581"}},{"n":"HXY-78312","b":"Steuerleitung 7 x 0,75 / 10 m","g":"Steuerung","p":69.03,"l":1,"v":0,"pik":"kabel"}],"HXY-120":[{"n":"HXY-69974","b":"Kohlebürste 5 x 8 x 16","g":"Antrieb","p":6.43,"l":1,"v":1,"pik":"buerste","vpe":4,"vt":"Satz zu 4 Stück","rang":2},{"n":"HXY-93301","b":"Rillenkugellager 6206 2RS","g":"Antrieb","p":10.61,"l":1,"v":0,"pik":"lager"},{"n":"HXY-26576","b":"Wellendichtring 55 x 80 x 8","g":"Antrieb","p":20.66,"l":1,"v":1,"pik":"dicht","vpe":10,"vt":"Packung zu 10 Stück","rang":3},{"n":"HXY-18091","b":"Schutzglas 300 x 150","g":"Gehäuse","p":54.78,"l":0,"v":0,"pik":"glas","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-68149","b":"Zylinderschraube M6 x 20","g":"Gehäuse","p":1.21,"l":0,"v":0,"pik":"schraube","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-97555","b":"Zylinderschraube M8 x 40","g":"Gehäuse","p":0.42,"l":1,"v":0,"pik":"schraube","vpe":25,"vt":"Beutel zu 25 Stück"},{"n":"HXY-48875","b":"Druckfeder Ø 12 x 40","g":"Schleifaggregat","p":3.43,"l":1,"v":0,"pik":"feder","vpe":5,"vt":"Beutel zu 5 Stück"},{"n":"HXY-12179","b":"Schleifband 50 x 1500 K60","g":"Schleifaggregat","p":6.75,"l":1,"v":1,"pik":"band","vpe":10,"vt":"Packung zu 10 Stück","rang":0},{"n":"HXY-87710","b":"Schleifband 50 x 1500 K80","g":"Schleifaggregat","p":5.14,"l":1,"v":0,"pik":"band","vpe":10,"vt":"Packung zu 10 Stück"},{"n":"HXY-61174","b":"Schleifscheibe Ø 400 x 50 K60","g":"Schleifaggregat","p":61.42,"l":0,"v":0,"pik":"schleifscheibe"},{"n":"HXY-77975","b":"Drucktaster Schlüsselschalter","g":"Steuerung","p":46.38,"l":1,"v":0,"pik":"taster"},{"n":"HXY-87404","b":"Drucktaster grün bündig","g":"Steuerung","p":22.07,"l":1,"v":0,"pik":"taster"}]},"bilder":[],"maschinen":[{"code":"7KQ4R2TB9F","sn":"HXY-2016-0471","typ":"HXY-240 Kantenschleifer","jahr":2016,"liste":"HXY-240","gepflegt":1,"standort":"Werk 2, Halle B","hinweis":"vollständig gepflegt, 59 Positionen"},{"code":"J3M8XP5WDA","sn":"HXY-2021-1180","typ":"HXY-320 Doppelschleifer","jahr":2021,"liste":"HXY-320","gepflegt":1,"standort":"Werk 1, Halle A","hinweis":"161 Positionen, sechs Baugruppen, 12 Verschleißteile"},{"code":"Q9V2HC7NRK","sn":"HXY-2023-0455","typ":"HXY-320 Doppelschleifer","jahr":2023,"liste":"HXY-320","gepflegt":1,"standort":"Werk 1, Halle C","hinweis":"wie oben, enthält ein abgekündigtes Teil","abg":{"n":"HXY-93353","nf":"HXY-38045"},"umbau":{"jahr":2024,"was":"Steuerung auf SPS-Vorschub umgebaut","g":"Steuerung"}},{"code":"5TB6YE1MGZ","sn":"HXY-2009-0112","typ":"HXY-120 Handschleifer","jahr":2009,"liste":"HXY-120","gepflegt":0,"standort":"Werk 2, Werkstatt","hinweis":"keine geprüfte Stückliste, nur Typliste"}],"bestand":4212},"qr":{"7KQ4R2TB9F":{"n":29,"d":"M0 0h7v1h-7zM11 0h1v1h-1zM18 0h1v1h-1zM20 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM10 1h2v1h-2zM14 1h1v1h-1zM16 1h1v1h-1zM19 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM12 2h2v1h-2zM18 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM11 3h1v1h-1zM13 3h7v1h-7zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h1v1h-1zM10 4h1v1h-1zM12 4h5v1h-5zM18 4h3v1h-3zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM14 5h3v1h-3zM18 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM9 7h3v1h-3zM13 7h2v1h-2zM18 7h1v1h-1zM1 8h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1zM8 8h1v1h-1zM10 8h3v1h-3zM15 8h1v1h-1zM17 8h5v1h-5zM23 8h2v1h-2zM26 8h1v1h-1zM2 9h2v1h-2zM5 9h1v1h-1zM9 9h1v1h-1zM12 9h1v1h-1zM14 9h1v1h-1zM17 9h2v1h-2zM21 9h1v1h-1zM28 9h1v1h-1zM0 10h2v1h-2zM4 10h3v1h-3zM8 10h2v1h-2zM11 10h1v1h-1zM15 10h1v1h-1zM17 10h2v1h-2zM22 10h2v1h-2zM25 10h3v1h-3zM1 11h2v1h-2zM4 11h1v1h-1zM7 11h2v1h-2zM10 11h1v1h-1zM13 11h1v1h-1zM16 11h1v1h-1zM18 11h1v1h-1zM22 11h1v1h-1zM25 11h2v1h-2zM28 11h1v1h-1zM0 12h3v1h-3zM4 12h1v1h-1zM6 12h2v1h-2zM9 12h1v1h-1zM11 12h1v1h-1zM17 12h4v1h-4zM23 12h3v1h-3zM0 13h1v1h-1zM2 13h1v1h-1zM7 13h2v1h-2zM15 13h2v1h-2zM19 13h2v1h-2zM22 13h2v1h-2zM25 13h1v1h-1zM28 13h1v1h-1zM2 14h2v1h-2zM5 14h2v1h-2zM9 14h3v1h-3zM13 14h1v1h-1zM15 14h5v1h-5zM22 14h1v1h-1zM26 14h1v1h-1zM1 15h2v1h-2zM5 15h1v1h-1zM7 15h2v1h-2zM10 15h4v1h-4zM17 15h1v1h-1zM19 15h1v1h-1zM21 15h2v1h-2zM24 15h2v1h-2zM28 15h1v1h-1zM0 16h1v1h-1zM2 16h1v1h-1zM5 16h2v1h-2zM9 16h1v1h-1zM12 16h1v1h-1zM14 16h1v1h-1zM16 16h1v1h-1zM18 16h1v1h-1zM21 16h2v1h-2zM24 16h2v1h-2zM27 16h2v1h-2zM0 17h2v1h-2zM3 17h1v1h-1zM5 17h1v1h-1zM7 17h2v1h-2zM10 17h1v1h-1zM13 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM24 17h1v1h-1zM27 17h2v1h-2zM3 18h1v1h-1zM6 18h1v1h-1zM9 18h2v1h-2zM12 18h2v1h-2zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h4v1h-4zM27 18h2v1h-2zM4 19h1v1h-1zM7 19h1v1h-1zM10 19h1v1h-1zM12 19h6v1h-6zM20 19h1v1h-1zM25 19h2v1h-2zM28 19h1v1h-1zM0 20h7v1h-7zM8 20h1v1h-1zM10 20h1v1h-1zM12 20h2v1h-2zM16 20h1v1h-1zM20 20h6v1h-6zM27 20h1v1h-1zM8 21h2v1h-2zM11 21h1v1h-1zM14 21h1v1h-1zM18 21h3v1h-3zM24 21h1v1h-1zM26 21h1v1h-1zM0 22h7v1h-7zM10 22h2v1h-2zM13 22h2v1h-2zM17 22h1v1h-1zM19 22h2v1h-2zM22 22h1v1h-1zM24 22h2v1h-2zM27 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM9 23h3v1h-3zM15 23h3v1h-3zM19 23h2v1h-2zM24 23h2v1h-2zM27 23h2v1h-2zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h1v1h-1zM11 24h2v1h-2zM14 24h1v1h-1zM18 24h1v1h-1zM20 24h8v1h-8zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM10 25h1v1h-1zM13 25h1v1h-1zM16 25h3v1h-3zM21 25h1v1h-1zM23 25h1v1h-1zM25 25h1v1h-1zM27 25h1v1h-1zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM9 26h1v1h-1zM16 26h1v1h-1zM18 26h2v1h-2zM21 26h1v1h-1zM23 26h1v1h-1zM26 26h3v1h-3zM0 27h1v1h-1zM6 27h1v1h-1zM8 27h2v1h-2zM12 27h3v1h-3zM20 27h2v1h-2zM23 27h2v1h-2zM26 27h2v1h-2zM0 28h7v1h-7zM11 28h1v1h-1zM13 28h5v1h-5zM19 28h3v1h-3zM23 28h4v1h-4z","url":"HTTPS://TEILE.HERSTELLERXY.DE/M/7KQ4R2TB9F"},"J3M8XP5WDA":{"n":29,"d":"M0 0h7v1h-7zM11 0h1v1h-1zM14 0h2v1h-2zM18 0h3v1h-3zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM10 1h3v1h-3zM14 1h1v1h-1zM16 1h1v1h-1zM19 1h2v1h-2zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM11 2h1v1h-1zM13 2h1v1h-1zM15 2h1v1h-1zM18 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM11 3h1v1h-1zM13 3h7v1h-7zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h3v1h-3zM12 4h9v1h-9zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM10 5h1v1h-1zM13 5h6v1h-6zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM11 7h1v1h-1zM14 7h1v1h-1zM17 7h1v1h-1zM1 8h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1zM8 8h2v1h-2zM11 8h6v1h-6zM19 8h3v1h-3zM23 8h2v1h-2zM26 8h1v1h-1zM1 9h1v1h-1zM5 9h1v1h-1zM9 9h2v1h-2zM12 9h1v1h-1zM15 9h3v1h-3zM19 9h4v1h-4zM28 9h1v1h-1zM0 10h2v1h-2zM3 10h4v1h-4zM8 10h2v1h-2zM17 10h4v1h-4zM22 10h2v1h-2zM25 10h3v1h-3zM1 11h2v1h-2zM4 11h1v1h-1zM10 11h2v1h-2zM13 11h1v1h-1zM15 11h2v1h-2zM18 11h1v1h-1zM22 11h1v1h-1zM25 11h2v1h-2zM28 11h1v1h-1zM0 12h2v1h-2zM4 12h1v1h-1zM6 12h2v1h-2zM9 12h1v1h-1zM15 12h1v1h-1zM17 12h2v1h-2zM20 12h1v1h-1zM23 12h3v1h-3zM2 13h1v1h-1zM7 13h2v1h-2zM15 13h2v1h-2zM19 13h2v1h-2zM22 13h2v1h-2zM25 13h1v1h-1zM28 13h1v1h-1zM0 14h5v1h-5zM6 14h1v1h-1zM11 14h1v1h-1zM14 14h3v1h-3zM19 14h1v1h-1zM22 14h1v1h-1zM26 14h1v1h-1zM0 15h1v1h-1zM2 15h1v1h-1zM4 15h2v1h-2zM7 15h3v1h-3zM11 15h4v1h-4zM17 15h3v1h-3zM22 15h1v1h-1zM24 15h2v1h-2zM28 15h1v1h-1zM0 16h4v1h-4zM6 16h1v1h-1zM10 16h1v1h-1zM14 16h1v1h-1zM16 16h1v1h-1zM18 16h1v1h-1zM22 16h1v1h-1zM24 16h2v1h-2zM27 16h2v1h-2zM0 17h3v1h-3zM5 17h1v1h-1zM7 17h2v1h-2zM11 17h4v1h-4zM17 17h2v1h-2zM22 17h1v1h-1zM24 17h1v1h-1zM27 17h2v1h-2zM6 18h2v1h-2zM9 18h5v1h-5zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h4v1h-4zM27 18h2v1h-2zM3 19h2v1h-2zM7 19h1v1h-1zM10 19h2v1h-2zM13 19h5v1h-5zM20 19h1v1h-1zM25 19h2v1h-2zM28 19h1v1h-1zM0 20h2v1h-2zM3 20h4v1h-4zM8 20h1v1h-1zM10 20h1v1h-1zM12 20h2v1h-2zM16 20h1v1h-1zM20 20h6v1h-6zM27 20h1v1h-1zM8 21h1v1h-1zM11 21h1v1h-1zM14 21h1v1h-1zM18 21h3v1h-3zM24 21h1v1h-1zM26 21h1v1h-1zM0 22h7v1h-7zM9 22h1v1h-1zM11 22h1v1h-1zM17 22h1v1h-1zM19 22h2v1h-2zM22 22h1v1h-1zM24 22h2v1h-2zM27 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM9 23h1v1h-1zM11 23h1v1h-1zM13 23h5v1h-5zM19 23h2v1h-2zM24 23h2v1h-2zM27 23h2v1h-2zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h4v1h-4zM13 24h1v1h-1zM18 24h1v1h-1zM20 24h8v1h-8zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM10 25h2v1h-2zM13 25h2v1h-2zM16 25h3v1h-3zM21 25h1v1h-1zM23 25h1v1h-1zM25 25h1v1h-1zM27 25h1v1h-1zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM9 26h1v1h-1zM11 26h1v1h-1zM16 26h1v1h-1zM18 26h2v1h-2zM21 26h1v1h-1zM23 26h1v1h-1zM26 26h3v1h-3zM0 27h1v1h-1zM6 27h1v1h-1zM8 27h2v1h-2zM13 27h2v1h-2zM22 27h3v1h-3zM26 27h2v1h-2zM0 28h7v1h-7zM11 28h1v1h-1zM13 28h5v1h-5zM21 28h6v1h-6z","url":"HTTPS://TEILE.HERSTELLERXY.DE/M/J3M8XP5WDA"},"Q9V2HC7NRK":{"n":29,"d":"M0 0h7v1h-7zM8 0h1v1h-1zM10 0h1v1h-1zM13 0h1v1h-1zM15 0h2v1h-2zM20 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h3v1h-3zM15 1h1v1h-1zM17 1h2v1h-2zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h2v1h-2zM11 2h5v1h-5zM17 2h1v1h-1zM19 2h2v1h-2zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM14 3h2v1h-2zM17 3h2v1h-2zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h2v1h-2zM12 4h1v1h-1zM14 4h2v1h-2zM18 4h1v1h-1zM20 4h1v1h-1zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM9 5h1v1h-1zM11 5h2v1h-2zM14 5h1v1h-1zM16 5h3v1h-3zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h1v1h-1zM11 7h1v1h-1zM16 7h1v1h-1zM19 7h1v1h-1zM1 8h2v1h-2zM4 8h1v1h-1zM6 8h2v1h-2zM9 8h1v1h-1zM11 8h1v1h-1zM15 8h2v1h-2zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h5v1h-5zM0 9h1v1h-1zM7 9h1v1h-1zM10 9h3v1h-3zM14 9h1v1h-1zM16 9h1v1h-1zM18 9h4v1h-4zM24 9h1v1h-1zM26 9h3v1h-3zM1 10h1v1h-1zM4 10h1v1h-1zM6 10h3v1h-3zM11 10h1v1h-1zM14 10h1v1h-1zM20 10h3v1h-3zM24 10h2v1h-2zM2 11h2v1h-2zM11 11h1v1h-1zM18 11h1v1h-1zM26 11h1v1h-1zM0 12h1v1h-1zM2 12h1v1h-1zM6 12h2v1h-2zM9 12h3v1h-3zM13 12h1v1h-1zM15 12h4v1h-4zM20 12h1v1h-1zM22 12h3v1h-3zM28 12h1v1h-1zM3 13h3v1h-3zM7 13h1v1h-1zM11 13h2v1h-2zM14 13h1v1h-1zM16 13h4v1h-4zM21 13h2v1h-2zM24 13h5v1h-5zM0 14h1v1h-1zM4 14h1v1h-1zM6 14h1v1h-1zM8 14h1v1h-1zM10 14h1v1h-1zM12 14h1v1h-1zM14 14h1v1h-1zM16 14h5v1h-5zM23 14h2v1h-2zM27 14h1v1h-1zM0 15h3v1h-3zM5 15h1v1h-1zM8 15h2v1h-2zM11 15h2v1h-2zM16 15h3v1h-3zM24 15h1v1h-1zM0 16h4v1h-4zM6 16h2v1h-2zM9 16h1v1h-1zM12 16h3v1h-3zM18 16h3v1h-3zM24 16h1v1h-1zM27 16h1v1h-1zM3 17h1v1h-1zM7 17h4v1h-4zM12 17h2v1h-2zM15 17h1v1h-1zM19 17h2v1h-2zM22 17h2v1h-2zM26 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h1v1h-1zM5 18h2v1h-2zM10 18h5v1h-5zM17 18h6v1h-6zM25 18h2v1h-2zM28 18h1v1h-1zM1 19h3v1h-3zM7 19h1v1h-1zM11 19h2v1h-2zM14 19h2v1h-2zM17 19h1v1h-1zM22 19h1v1h-1zM26 19h1v1h-1zM0 20h1v1h-1zM2 20h2v1h-2zM5 20h4v1h-4zM11 20h2v1h-2zM19 20h6v1h-6zM27 20h2v1h-2zM8 21h1v1h-1zM12 21h1v1h-1zM15 21h1v1h-1zM17 21h1v1h-1zM19 21h2v1h-2zM24 21h1v1h-1zM27 21h1v1h-1zM0 22h7v1h-7zM8 22h2v1h-2zM12 22h2v1h-2zM15 22h1v1h-1zM18 22h3v1h-3zM22 22h1v1h-1zM24 22h3v1h-3zM0 23h1v1h-1zM6 23h1v1h-1zM9 23h3v1h-3zM13 23h1v1h-1zM15 23h1v1h-1zM17 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h4v1h-4zM16 24h1v1h-1zM18 24h7v1h-7zM26 24h3v1h-3zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM9 25h2v1h-2zM13 25h4v1h-4zM20 25h1v1h-1zM24 25h3v1h-3zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h1v1h-1zM11 26h2v1h-2zM14 26h4v1h-4zM19 26h2v1h-2zM24 26h1v1h-1zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM8 27h5v1h-5zM14 27h1v1h-1zM16 27h1v1h-1zM19 27h10v1h-10zM0 28h7v1h-7zM10 28h2v1h-2zM14 28h2v1h-2zM17 28h1v1h-1zM19 28h1v1h-1zM23 28h2v1h-2zM26 28h1v1h-1zM28 28h1v1h-1z","url":"HTTPS://TEILE.HERSTELLERXY.DE/M/Q9V2HC7NRK"},"5TB6YE1MGZ":{"n":29,"d":"M0 0h7v1h-7zM8 0h1v1h-1zM10 0h2v1h-2zM13 0h4v1h-4zM20 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h3v1h-3zM15 1h1v1h-1zM17 1h3v1h-3zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h2v1h-2zM11 2h1v1h-1zM13 2h5v1h-5zM19 2h2v1h-2zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM14 3h1v1h-1zM17 3h3v1h-3zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h1v1h-1zM12 4h4v1h-4zM17 4h2v1h-2zM20 4h1v1h-1zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM10 5h3v1h-3zM16 5h1v1h-1zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h1v1h-1zM10 7h2v1h-2zM16 7h1v1h-1zM19 7h1v1h-1zM1 8h2v1h-2zM4 8h1v1h-1zM6 8h2v1h-2zM9 8h1v1h-1zM11 8h1v1h-1zM13 8h1v1h-1zM15 8h1v1h-1zM17 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h5v1h-5zM0 9h2v1h-2zM3 9h1v1h-1zM5 9h1v1h-1zM8 9h1v1h-1zM10 9h3v1h-3zM16 9h1v1h-1zM18 9h2v1h-2zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h3v1h-3zM1 10h1v1h-1zM4 10h1v1h-1zM6 10h2v1h-2zM14 10h1v1h-1zM16 10h1v1h-1zM20 10h3v1h-3zM24 10h2v1h-2zM3 11h1v1h-1zM12 11h1v1h-1zM16 11h1v1h-1zM18 11h1v1h-1zM26 11h1v1h-1zM0 12h1v1h-1zM6 12h2v1h-2zM9 12h3v1h-3zM13 12h1v1h-1zM15 12h4v1h-4zM20 12h1v1h-1zM22 12h3v1h-3zM28 12h1v1h-1zM3 13h1v1h-1zM5 13h1v1h-1zM7 13h1v1h-1zM9 13h1v1h-1zM11 13h4v1h-4zM16 13h4v1h-4zM21 13h2v1h-2zM24 13h5v1h-5zM4 14h3v1h-3zM8 14h2v1h-2zM12 14h1v1h-1zM14 14h1v1h-1zM16 14h6v1h-6zM23 14h2v1h-2zM27 14h1v1h-1zM0 15h1v1h-1zM2 15h1v1h-1zM5 15h1v1h-1zM8 15h1v1h-1zM11 15h2v1h-2zM16 15h3v1h-3zM22 15h1v1h-1zM24 15h1v1h-1zM0 16h1v1h-1zM2 16h1v1h-1zM4 16h4v1h-4zM9 16h1v1h-1zM12 16h2v1h-2zM18 16h4v1h-4zM24 16h1v1h-1zM27 16h1v1h-1zM2 17h1v1h-1zM7 17h1v1h-1zM9 17h2v1h-2zM12 17h4v1h-4zM19 17h1v1h-1zM21 17h3v1h-3zM26 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h2v1h-2zM5 18h2v1h-2zM10 18h1v1h-1zM12 18h3v1h-3zM17 18h3v1h-3zM21 18h2v1h-2zM25 18h2v1h-2zM28 18h1v1h-1zM1 19h1v1h-1zM3 19h1v1h-1zM8 19h1v1h-1zM12 19h1v1h-1zM14 19h2v1h-2zM17 19h1v1h-1zM22 19h1v1h-1zM26 19h1v1h-1zM0 20h1v1h-1zM2 20h2v1h-2zM5 20h2v1h-2zM8 20h1v1h-1zM11 20h2v1h-2zM19 20h6v1h-6zM27 20h2v1h-2zM8 21h1v1h-1zM12 21h2v1h-2zM15 21h1v1h-1zM17 21h1v1h-1zM19 21h2v1h-2zM24 21h1v1h-1zM27 21h1v1h-1zM0 22h7v1h-7zM8 22h1v1h-1zM10 22h1v1h-1zM12 22h1v1h-1zM15 22h1v1h-1zM18 22h3v1h-3zM22 22h1v1h-1zM24 22h3v1h-3zM0 23h1v1h-1zM6 23h1v1h-1zM9 23h3v1h-3zM13 23h1v1h-1zM15 23h1v1h-1zM17 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h1v1h-1zM11 24h1v1h-1zM13 24h2v1h-2zM16 24h1v1h-1zM18 24h7v1h-7zM26 24h3v1h-3zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM9 25h2v1h-2zM12 25h5v1h-5zM20 25h1v1h-1zM24 25h3v1h-3zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h1v1h-1zM11 26h1v1h-1zM14 26h4v1h-4zM19 26h2v1h-2zM24 26h1v1h-1zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM8 27h5v1h-5zM14 27h1v1h-1zM16 27h1v1h-1zM19 27h3v1h-3zM23 27h6v1h-6zM0 28h7v1h-7zM10 28h2v1h-2zM14 28h2v1h-2zM17 28h1v1h-1zM19 28h1v1h-1zM21 28h1v1h-1zM23 28h2v1h-2zM26 28h1v1h-1zM28 28h1v1h-1z","url":"HTTPS://TEILE.HERSTELLERXY.DE/M/5TB6YE1MGZ"}}};
+const H = DATEN.daten.hersteller, PREISSTAND = DATEN.daten.preisstand;
+const MASCHINEN = DATEN.daten.maschinen, LISTEN = DATEN.daten.listen;
+const BILDER = new Set(DATEN.daten.bilder);
+const EILSATZ = 0.03;
+const eilAufschlag = (netto, eil) => eil ? Math.round(netto * EILSATZ * 100) / 100 : 0;
+const eur = n => new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(n);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const jetzt = () => new Date().toLocaleString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+let korb = [], bestellungen = [], rueckfragen = [], postausgang = [], zaehler = 0;
+let filter = {q:'', g:[], v:false}, mengen = {}, letzteMaschine = null;
+
+function speichern(){ try{ sessionStorage.setItem('hxy', JSON.stringify({korb,bestellungen,rueckfragen,postausgang,zaehler,ereignisse})); }catch(e){} }
+function laden(){ try{ const r = sessionStorage.getItem('hxy'); if(r){ const d = JSON.parse(r);
+  korb=d.korb||[]; bestellungen=d.bestellungen||[]; rueckfragen=d.rueckfragen||[]; postausgang=d.postausgang||[]; zaehler=d.zaehler||0; ereignisse=d.ereignisse||[]; } }catch(e){} }
+
+const maschine = code => MASCHINEN.find(m => m.code.toUpperCase() === String(code||'').toUpperCase());
+const teileVon = m => LISTEN[m.liste];
+const teil = (m, nr) => teileVon(m).find(t => t.n === nr);
+const korbSumme = () => korb.reduce((s,p) => s + p.preis * p.menge, 0);
+const korbAnzahl = () => korb.reduce((s,p) => s + p.menge, 0);
+const seg = () => (location.hash || '#/').split('/').slice(1);
+const aktuellerCode = () => { const s = seg(); const i = s.indexOf('m'); return i >= 0 ? s[i+1] : null; };
+
+const PIKS = {
+ lager:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="4.6" r="1.1" fill="currentColor"/><circle cx="19.4" cy="12" r="1.1" fill="currentColor"/><circle cx="12" cy="19.4" r="1.1" fill="currentColor"/><circle cx="4.6" cy="12" r="1.1" fill="currentColor"/>',
+ riemen:'<path d="M7.5 5.5h9a5.5 5.5 0 0 1 0 13h-9a5.5 5.5 0 0 1 0-13z"/><path d="M7.5 8.5h9a2.5 2.5 0 0 1 0 7h-9a2.5 2.5 0 0 1 0-7z"/>',
+ band:'<rect x="2.5" y="7" width="19" height="10" rx="1"/><path d="M6 10.5h.01M9.5 13h.01M13 10.5h.01M16.5 13h.01M6 14h.01M13 14h.01" stroke-linecap="round" stroke-width="2"/>',
+ hebel:'<circle cx="6" cy="17" r="2.6"/><path d="M8 15.4 18 7"/><circle cx="19" cy="6" r="2.2"/>',
+ dicht:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/>',
+ feder:'<path d="M4 7h16M5.5 10.5h13M4 14h16M5.5 17.5h13" stroke-linecap="round"/><path d="M20 7 4 10.5l16 3.5L4 17.5"/>',
+ spindel:'<path d="M2.5 12h19"/><path d="M6 8.5v7M9.5 8.5v7M13 8.5v7M16.5 8.5v7"/><rect x="4" y="8.5" width="15" height="7" rx="1"/>',
+ sensor:'<rect x="3" y="8" width="11" height="8" rx="1"/><path d="M14 10.5h2.5M14 13.5h2.5"/><path d="M18 8.5a5 5 0 0 1 0 7M20.5 6.5a8.5 8.5 0 0 1 0 11"/>',
+ sring:'<path d="M18.5 7.5A9 9 0 1 0 19 16"/><circle cx="18.5" cy="6" r="1.6"/><circle cx="20" cy="17" r="1.6"/>',
+ scheibe:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.6"/><path d="M12 4v1.8M18 8l-1.6.9M18 16l-1.6-.9M12 20v-1.8M6 16l1.6-.9M6 8l1.6.9" stroke-width="2.4"/>',
+ luefter:'<circle cx="12" cy="12" r="2.4"/><path d="M12 9.6c0-4 1.2-6 3.4-6 1.8 0 2.6 2.6-.4 4.6-1.4.9-3 1.4-3 1.4zM14.4 12c4 0 6 1.2 6 3.4 0 1.8-2.6 2.6-4.6-.4-.9-1.4-1.4-3-1.4-3zM9.6 12c-4 0-6-1.2-6-3.4 0-1.8 2.6-2.6 4.6.4.9 1.4 1.4 3 1.4 3zM12 14.4c0 4-1.2 6-3.4 6-1.8 0-2.6-2.6.4-4.6 1.4-.9 3-1.4 3-1.4z"/>',
+ buerste:'<rect x="7" y="9" width="10" height="11" rx="1"/><path d="M12 9V5.5M12 5.5c0-1.4 1.6-1.4 1.6-2.6"/><path d="M7 16.5h10"/>',
+ getriebe:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="7.2" r="2.4"/><circle cx="16.2" cy="14.4" r="2.4"/><circle cx="7.8" cy="14.4" r="2.4"/>',
+ haube:'<path d="M3.5 17a8.5 8.5 0 0 1 17 0"/><path d="M2 17h20v3H2z"/><path d="M7 17a5 5 0 0 1 10 0"/>',
+ klemme:'<rect x="2.5" y="8" width="19" height="8" rx="1"/><path d="M7 8v8M12 8v8M17 8v8"/><circle cx="4.7" cy="12" r="1" fill="currentColor"/><circle cx="9.5" cy="12" r="1" fill="currentColor"/><circle cx="14.5" cy="12" r="1" fill="currentColor"/><circle cx="19.3" cy="12" r="1" fill="currentColor"/>',
+ balg:'<path d="M3 8h2l2-2 2 2h2l2-2 2 2h2l2-2v12l-2-2h-2l-2 2-2-2h-2l-2 2-2-2H3z"/>',
+ schuetz:'<rect x="4" y="4.5" width="16" height="15" rx="1"/><path d="M8 8.5v3.2l4.5 3.8M8 15.5h.01M16 8.5v7"/>',
+ schlauch:'<path d="M4 7h3.2M4 17h3.2"/><rect x="2" y="5.4" width="2.4" height="3.2" rx=".4" fill="currentColor"/><rect x="2" y="15.4" width="2.4" height="3.2" rx=".4" fill="currentColor"/><path d="M7.2 7c7 0 7 10 14 10"/><path d="M7.2 8.6c5.4 0 5.4 10 12.8 10"/>',
+ schraube:'<path d="M9.5 3.5h5v4h-5z"/><path d="M10 7.5h4l-.6 13-1.4 2-1.4-2z"/><path d="M10.1 10.5h3.8M10 13.5h3.7M9.9 16.5h3.6"/>',
+ mutter:'<path d="M12 3.6 19.3 7.8v8.4L12 20.4 4.7 16.2V7.8z"/><circle cx="12" cy="12" r="3.6"/>',
+ uscheibe:'<ellipse cx="12" cy="12" rx="9" ry="5.4"/><ellipse cx="12" cy="12" rx="3.4" ry="2"/>',
+ passfeder:'<rect x="3" y="9" width="18" height="6" rx="3"/><path d="M6.5 9v6M17.5 9v6"/>',
+ nippel:'<circle cx="12" cy="6.6" r="2.8"/><path d="M10.6 9.2h2.8v4h-2.8z"/><path d="M8.8 13.2h6.4v2.4H8.8z"/><path d="M10 15.6h4v4.4h-4z"/>',
+ kupplung:'<circle cx="8" cy="12" r="5"/><circle cx="16" cy="12" r="5"/><path d="M8 7v10M16 7v10"/>',
+ motor:'<rect x="3.5" y="7" width="12" height="10" rx="1"/><path d="M15.5 10h2.8v4h-2.8z"/><path d="M18.3 11.4h2.4v1.2h-2.4z"/><path d="M6 7V5h6v2"/><path d="M6.5 10.5v3M9 10.5v3M11.5 10.5v3"/>',
+ schleifscheibe:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.6"/><path d="M12 3v2.4M21 12h-2.4M12 21v-2.4M3 12h2.4M18.4 5.6l-1.7 1.7M18.4 18.4l-1.7-1.7M5.6 18.4l1.7-1.7M5.6 5.6l1.7 1.7"/>',
+ auflage:'<path d="M3 15h18"/><path d="M3 15v4M21 15v4"/><path d="M6 15 9.5 8h5L18 15"/>',
+ diamant:'<path d="M12 3.5 20 10l-8 10.5L4 10z"/><path d="M4 10h16M12 3.5 8.5 10l3.5 10.5L15.5 10z"/>',
+ rolle:'<rect x="4" y="6" width="16" height="12" rx="2"/><path d="M7.5 6v12M16.5 6v12"/><path d="M2 10h2M2 14h2M20 10h2M20 14h2"/>',
+ filter:'<path d="M3.5 4.5h17l-6.5 8v7l-4 2.2v-9.2z"/><path d="M6.5 8h11"/>',
+ schelle:'<path d="M19 9.5A8 8 0 1 0 19 15"/><rect x="16.5" y="8.2" width="5" height="7.6" rx="1"/><path d="M19 8.2v7.6"/>',
+ gitter:'<rect x="3.5" y="3.5" width="17" height="17" rx="1.5"/><path d="M9 3.5v17M15 3.5v17M3.5 9h17M3.5 15h17"/>',
+ sack:'<path d="M8 3.5h8l-1 3.2c2.6 1.6 4 4.3 4 7.3 0 3.9-3.1 6.5-7 6.5s-7-2.6-7-6.5c0-3 1.4-5.7 4-7.3z"/><path d="M8 6.7h8"/>',
+ zyklon:'<path d="M5 4h14l-5 9v7l-4-2.5V13z"/><path d="M5 4c3 2 11 2 14 0"/>',
+ sicherung:'<rect x="2.5" y="8.5" width="19" height="7" rx="1"/><path d="M6.5 8.5v7M17.5 8.5v7"/><path d="M6.5 12h11"/>',
+ taster:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.2"/>',
+ kabel:'<path d="M3 17c5 0 5-10 10-10"/><path d="M13 4.5h3.5v5H13z"/><path d="M16.5 6h4M16.5 8h4"/><path d="M2 15.2h2.4v3.6H2z"/>',
+ netzteil:'<rect x="2.5" y="7" width="19" height="10" rx="1"/><path d="M6 10.5h3.5M7.75 8.75v3.5"/><path d="M14.5 10.5H18"/><path d="M5 17v2M19 17v2"/>',
+ folie:'<rect x="2.5" y="4.5" width="19" height="15" rx="1.5"/><rect x="5" y="7" width="9" height="5" rx="1"/><circle cx="17.5" cy="9.5" r="2"/><path d="M5 15.5h6M14 15.5h4"/>',
+ anzeige:'<circle cx="12" cy="12" r="8.5"/><path d="M12 12 16 8.5"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><path d="M12 3.5v1.6M20.5 12h-1.6M12 20.5v-1.6M3.5 12h1.6"/>',
+ ventil:'<path d="M3.5 6.5v11L11 12z"/><path d="M20.5 6.5v11L13 12z"/><path d="M11 12h2"/><path d="M12 12V5.5M9 5.5h6"/>',
+ pumpe:'<circle cx="11" cy="13" r="7"/><path d="M11 6V3h6v3"/><path d="M18 13h3.5"/><path d="M11 9.5 14.5 13 11 16.5"/>',
+ speicher:'<rect x="7" y="6.5" width="10" height="13" rx="5"/><path d="M12 6.5V3.5M9 3.5h6"/><path d="M7 13h10"/>',
+ schiene:'<path d="M3 7.5h18v3H3zM3 13.5h18v3H3z"/><path d="M6.5 10.5v3M12 10.5v3M17.5 10.5v3"/>',
+ fuss:'<path d="M10.5 3h3v9h-3z"/><path d="M10.9 5h2.2M10.9 7h2.2M10.9 9h2.2"/><path d="M5 20.5a7 3.5 0 0 1 14 0z"/>',
+ glas:'<rect x="3" y="5.5" width="18" height="13" rx="1"/><path d="M6 15.5 10 9l3 4 2-2.5 3 5"/>',
+ teil:'<rect x="4" y="4.5" width="16" height="15" rx="1"/><path d="M8 9h8M8 12h8M8 15h5"/>'
+};
+function pik(k){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">'+
+    (PIKS[k] || PIKS.teil)+'</svg>';
+}
+
+/* Ereignisprotokoll für die Auswertung der Gespräche */
+let ereignisse = [], letzteTrefferzahl = 0, suchTimer = null;
+function log(art, text){
+  ereignisse.push({t: Date.now(), art, text: text || ''});
+  if(ereignisse.length > 400) ereignisse.shift();
+  speichern();
+}
+
+function qrSvg(code, klasse){
+  const q = DATEN.qr[code];
+  return '<svg class="'+(klasse||'')+'" viewBox="-2 -2 '+(q.n+4)+' '+(q.n+4)+'" role="img" aria-label="QR-Code der Maschine">'+
+    '<rect x="-2" y="-2" width="'+(q.n+4)+'" height="'+(q.n+4)+'" fill="#fff"/>'+
+    '<path d="'+q.d+'" fill="#14181c"/></svg>';
+}
+const kurzUrl = code => H.host + '/M/' + code;
+
+function schild(m, mitCode){
+  return '<div class="schild">'+
+    '<div class="daten">'+
+      '<div class="marke">'+esc(H.name)+'</div>'+
+      '<div class="zeile"><span class="f">Typ</span><span class="w">'+esc(m.typ.split(' ')[0])+'</span></div>'+
+      '<div class="zeile"><span class="f">Bezeichnung</span><span class="w">'+esc(m.typ.split(' ').slice(1).join(' '))+'</span></div>'+
+      '<div class="zeile"><span class="f">Masch.-Nr.</span><span class="w">'+esc(m.sn)+'</span></div>'+
+      '<div class="zeile"><span class="f">Baujahr</span><span class="w">'+m.jahr+'</span></div>'+
+    '</div>'+
+    (mitCode ? '<div class="code">'+qrSvg(m.code)+'<div class="url">'+esc(kurzUrl(m.code))+'</div></div>' : '')+
+  '</div>';
+}
+
+function teilZeile(m, t, opt){
+  opt = opt || {};
+  const istAbg = m.abg && m.abg.n === t.n;
+  const nf = istAbg ? teil(m, m.abg.nf) : null;
+  const fremd = !!t.fr;
+  const umbau = m.umbau && m.umbau.g === t.g;
+  const schritt = t.vpe || 1;
+  const anzahl = mengen[t.n] || schritt;
+  const sperre = istAbg || fremd || opt.ungeprueft;
+  const meta = ['<span class="nr">'+t.n+'</span>', '<span>'+esc(t.g)+'</span>']
+    .concat(t.v ? ['<span style="color:var(--amber)">Verschleißteil</span>'] : [])
+    .concat(t.vpe ? ['<span class="vpe">'+esc(t.vt)+'</span>'] : [])
+    .concat(umbau ? ['<span class="umbau-m">kann abweichen</span>'] : [])
+    .concat(opt.ungeprueft ? ['<span class="ungeprueft">nicht geprüft</span>'] : []);
+  const kasten = fremd
+    ? '<div class="zukauf">Zukaufteil von '+esc(t.fr.f)+', Typ '+esc(t.fr.t)+'. Wir führen es nicht im eigenen Programm.'+
+      ' <a href="#" data-anfrage="'+t.n+'">Beim Innendienst anfragen</a></div>'
+    : (istAbg && nf ? '<div class="abg">Dieses Teil ist abgekündigt. Nachfolger: <a href="#" data-nf="'+nf.n+'">'+nf.n+'</a></div>' : '');
+  const aktion = opt.ungeprueft ? ''
+    : '<div class="aktion">'+(sperre
+      ? '<span class="fuellen" style="font-size:.85rem;color:var(--mut)">'+(fremd?'nicht über uns bestellbar':'nicht mehr bestellbar')+'</span>'
+      : '<div class="menge"><button data-minus="'+t.n+'" '+(anzahl<=schritt?'disabled':'')+' aria-label="Menge verringern">&minus;</button>'+
+        '<span class="wert" id="mg-'+t.n+'">'+anzahl+'</span>'+
+        '<button data-plus="'+t.n+'" aria-label="Menge erhöhen">+</button></div>'+
+        (schritt > 1 ? '<span class="schrittweite">Schritt '+schritt+'</span>' : '')+
+        '<span class="fuellen"></span><button class="btn" data-add="'+t.n+'">Hinzufügen</button>')+'</div>';
+  return '<li class="teil '+(t.l?'':'besch')+(sperre?' aus':'')+'">'+
+    '<span class="strip"></span><span class="pik">'+pik(t.pik)+'</span>'+
+    '<div class="info"><div class="ben">'+esc(t.b)+'</div>'+
+    '<div class="meta">'+meta.join('')+'</div>'+kasten+'</div>'+
+    '<div class="preis">'+eur(t.p)+'<span class="verf">'+(t.l?'Lagerteil':'Beschaffungsteil')+'</span>'+
+      (t.vpe ? '<span class="jestueck">je Stück</span>' : '')+'</div>'+
+    aktion+'</li>';
+}
+
+/* Brotkrumen über dem Portal */
+function krumen(pfad, jetztText){
+  const teileH = pfad.map(p => p.href
+    ? '<a href="'+p.href+'">'+esc(p.t)+'</a>'
+    : '<span>'+esc(p.t)+'</span>').join('<span class="pf">›</span>');
+  return '<div class="krumen">'+teileH+(jetztText ? '<span class="pf">›</span><span class="jetzt">'+esc(jetztText)+'</span>' : '')+'</div>';
+}
+const PORTAL = [{t:'Start', href:'#/'}, {t:'Service', href:'#/service'}, {t:'Ersatzteile', href:'#/ersatzteile'}];
+
+/* ========== Website ========== */
+function riss(){
+  const l = '#7d96ab', hell = '#8ea2b3', akz = '#4a9ad6';
+  return '<svg viewBox="0 0 520 348" role="img" aria-label="Schematische Vorderansicht einer Doppelschleifmaschine mit Typenschild">'+
+  '<g fill="none" stroke="'+l+'" stroke-width="1.3">'+
+    '<rect x="150" y="196" width="220" height="92"/>'+
+    '<rect x="166" y="212" width="86" height="60"/>'+
+    '<rect x="268" y="212" width="86" height="28"/>'+
+    '<path d="M120 288h280v16H120z"/>'+
+    '<path d="M138 304h34v12h-34zM348 304h34v12h-34z"/>'+
+    '<rect x="196" y="112" width="128" height="84" rx="3"/>'+
+    '<circle cx="110" cy="154" r="56"/><circle cx="110" cy="154" r="21"/><circle cx="110" cy="154" r="7"/>'+
+    '<circle cx="410" cy="154" r="56"/><circle cx="410" cy="154" r="21"/><circle cx="410" cy="154" r="7"/>'+
+    '<path d="M62 120a56 56 0 0 1 96 0"/><path d="M362 120a56 56 0 0 1 96 0"/>'+
+    '<path d="M74 196h72l-10 16H84z"/><path d="M374 196h72l-10 16h-52z"/>'+
+    '<path d="M196 140h-40M324 140h40"/>'+
+  '</g>'+
+  '<path d="M20 154h520" stroke="'+l+'" stroke-width=".8" stroke-dasharray="26 5 3 5" opacity=".75"/>'+
+  '<g stroke="'+akz+'" stroke-width="1.3" fill="none">'+
+    '<rect x="276" y="246" width="70" height="34"/>'+
+    '<path d="M346 263h44l22-34h66" stroke-dasharray="3 3"/>'+
+  '</g>'+
+  '<g fill="'+akz+'">'+
+    '<rect x="282" y="252" width="16" height="16"/>'+
+    '<rect x="286" y="256" width="8" height="8" fill="#101519"/>'+
+    '<rect x="304" y="252" width="34" height="2.4"/><rect x="304" y="258" width="26" height="2.4"/>'+
+    '<rect x="304" y="264" width="30" height="2.4"/><rect x="282" y="272" width="56" height="2.4"/>'+
+  '</g>'+
+  '<g stroke="'+hell+'" stroke-width=".9" fill="none" opacity=".85">'+
+    '<path d="M54 330h412"/><path d="M54 324v12M466 324v12"/>'+
+  '</g>'+
+  '<text x="260" y="324" text-anchor="middle" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="11" fill="'+hell+'">1.240 mm</text>'+
+  '<text x="440" y="226" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="11.5" fill="'+akz+'">Typenschild</text>'+
+  '<text x="440" y="241" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="11.5" fill="'+akz+'">mit Code</text>'+
+  '<text x="20" y="28" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="11" fill="'+hell+'" opacity=".8">HXY-320 Doppelschleifer</text>'+
+  '<text x="20" y="44" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="11" fill="'+hell+'" opacity=".55">Vorderansicht, Maßstab 1:10</text>'+
+  '</svg>';
+}
+
+const BAUREIHEN = [
+  {typ:'HXY-120', name:'Handschleifer', text:'Der Klassiker für Werkstatt und Instandhaltung. Seit 1989 nahezu unverändert im Programm, Ersatzteile bis heute lieferbar.',
+   daten:[['Leistung','1,1 kW'],['Scheibe','Ø 150 mm'],['Gewicht','18 kg'],['im Feld seit','1989']]},
+  {typ:'HXY-240', name:'Kantenschleifer', text:'Für Blechkanten und Schweißnähte in der Serienfertigung. Mit Absaugung und Werkzeugaufnahme für Bandbreiten bis 100 Millimeter.',
+   daten:[['Leistung','4,0 kW'],['Band','100 x 2000 mm'],['Gewicht','260 kg'],['im Feld seit','2011']]},
+  {typ:'HXY-320', name:'Doppelschleifer', text:'Unsere meistverkaufte Baureihe. Zwei Aggregate an einer Spindel, wahlweise mit Absaugung, Kühlung und Steuerung für automatischen Vorschub.',
+   daten:[['Leistung','7,5 kW'],['Scheiben','2 x Ø 400 mm'],['Gewicht','840 kg'],['im Feld seit','2016']]},
+];
+
+function seiteStart(){
+  return '<section class="hero"><div class="innen">'+
+    '<div class="text"><h1>Schleifmaschinen, die dreißig Jahre laufen</h1>'+
+    '<p>Seit 1972 bauen wir in Schwäbisch Gmünd Schleifmaschinen für Metallverarbeitung und Instandhaltung. '+
+    'Über 4.200 davon stehen heute in Werkhallen in 38 Ländern. Für jede einzelne gibt es Ersatzteile.</p>'+
+    '<div class="knoepfe"><a class="k1" href="#/ersatzteile">Ersatzteile zu Ihrer Maschine</a>'+
+    '<a class="k2" href="#/maschinen">Unsere Baureihen</a></div></div>'+
+    '<div class="riss">'+riss()+'</div></div></section>'+
+    '<div class="band"><div class="innen">'+
+      '<div><b>1972</b><span>gegründet</span></div>'+
+      '<div><b>180</b><span>Mitarbeiter</span></div>'+
+      '<div><b>4.200</b><span>Maschinen im Feld</span></div>'+
+      '<div><b>38</b><span>Länder</span></div>'+
+      '<div><b>24 h</b><span>Ersatzteile bestellbar</span></div>'+
+    '</div></div>'+
+
+    '<section class="rubrik"><div class="breit">'+
+    '<h2>Baureihen</h2><p class="vor">Drei Baureihen, aufeinander abgestimmte Aggregate, gemeinsame Verschleißteile. Wer eine Maschine von uns kennt, kennt alle.</p>'+
+    '<div class="reihe">'+BAUREIHEN.map(b => '<div class="karte"><h3>'+b.typ+'</h3>'+
+      '<div class="rolle">'+b.name+'</div><p>'+esc(b.text)+'</p>'+
+      '<dl>'+b.daten.map(d => '<div><dt>'+d[0]+'</dt><dd>'+d[1]+'</dd></div>').join('')+'</dl>'+
+      '<div class="unten"><a class="mehr" href="#/maschinen">Technische Daten</a></div></div>').join('')+
+    '</div></div></section>'+
+
+    '<section class="rubrik"><div class="breit">'+
+    '<h2>Service</h2><p class="vor">Eine stehende Maschine kostet mehr als jedes Ersatzteil. Deshalb haben wir den Weg zum richtigen Teil so kurz wie möglich gemacht.</p>'+
+    '<div class="service">'+
+      '<div class="haupt"><h3>Ersatzteile rund um die Uhr</h3>'+
+      '<p>Jede Maschine ab Baujahr 2016 trägt am Typenschild einen Code. Scannen, Teileliste genau dieser Maschine sehen, bestellen. Ohne Anruf, ohne Konto, auch um zehn Uhr abends.</p>'+
+      '<ul class="schritte">'+
+        '<li><b>Schritt 1</b>Code am Typenschild mit dem Telefon scannen</li>'+
+        '<li><b>Schritt 2</b>Teil in der Liste Ihrer Maschine auswählen</li>'+
+        '<li><b>Schritt 3</b>Bestellen, Bestätigung kommt sofort</li>'+
+      '</ul>'+
+      '<div class="wahlzeile"><a class="haupt" href="#/ersatzteile" style="background:#2d79b0;color:#fff">Zum Ersatzteilportal</a>'+
+      '<a class="neben" href="#/ersatzteile/suche" style="border-color:#46525c;color:#dbe4ea">Maschinennummer eingeben</a></div></div>'+
+      '<div class="neben">'+
+        '<div class="karte"><h3>Wartung und Inspektion</h3><div class="rolle">Vor Ort oder im Werk</div>'+
+        '<p>Jährliche Inspektion mit Prüfprotokoll, Austausch der Verschleißteile, Abnahme nach Betriebssicherheitsverordnung.</p>'+
+        '<div class="unten"><a class="mehr" href="#/kontakt">Termin anfragen</a></div></div>'+
+        '<div class="karte"><h3>Schulung</h3><div class="rolle">Zwei Tage im Werk</div>'+
+        '<p>Für Instandhalter: Aufbau, Einstellung, Fehlersuche. Vier Termine im Jahr, maximal acht Teilnehmer.</p>'+
+        '<div class="unten"><a class="mehr" href="#/kontakt">Termine erfragen</a></div></div>'+
+      '</div>'+
+    '</div></div></section>'+
+
+    '<section class="rubrik"><div class="breit"><h2>Kontakt</h2>'+
+    '<div class="kontakt">'+
+      '<div class="sp"><h3>Ersatzteilinnendienst</h3><p class="mono">'+esc(H.tel)+'</p>'+
+      '<p><a href="mailto:'+esc(H.mail)+'">'+esc(H.mail)+'</a></p>'+
+      '<p style="color:#6b7076;font-size:.86rem">Montag bis Donnerstag 7 bis 17 Uhr, Freitag bis 14 Uhr</p></div>'+
+      '<div class="sp"><h3>Werk und Verwaltung</h3><p>HerstellerXY GmbH<br>Industriestraße 14<br>73527 Schwäbisch Gmünd</p></div>'+
+      '<div class="sp"><h3>Außerhalb der Geschäftszeiten</h3>'+
+      '<p>Ersatzteile können Sie jederzeit über das Portal bestellen. Der Innendienst bearbeitet die Bestellung am nächsten Werktag.</p>'+
+      '<p><a href="#/ersatzteile">Zum Ersatzteilportal</a></p></div>'+
+    '</div></div></section>';
+}
+
+function seiteMaschinen(){
+  return '<section class="rubrik"><div class="breit">'+
+    '<h2>Baureihen und technische Daten</h2>'+
+    '<p class="vor">Alle Maschinen werden in Schwäbisch Gmünd gefertigt. Ersatzteile halten wir mindestens fünfzehn Jahre nach dem Ende einer Baureihe vor.</p>'+
+    '<div class="reihe">'+BAUREIHEN.map(b => '<div class="karte"><h3>'+b.typ+'</h3>'+
+      '<div class="rolle">'+b.name+'</div><p>'+esc(b.text)+'</p>'+
+      '<dl>'+b.daten.map(d => '<div><dt>'+d[0]+'</dt><dd>'+d[1]+'</dd></div>').join('')+'</dl>'+
+      '<div class="unten"><a class="mehr" href="#/ersatzteile">Ersatzteile dieser Baureihe</a></div></div>').join('')+
+    '</div></div></section>'+
+    '<section class="rubrik"><div class="schmal" style="padding-left:24px">'+
+    '<h2>Typenschild und Code</h2>'+
+    '<p>Maschinen ab Baujahr 2016 tragen am Typenschild einen Code, der dauerhaft auf die Ersatzteilliste genau dieser Maschine zeigt. '+
+    'Das Format folgt IEC 61406, dem Standard für die digitale Produktkennzeichnung, und erfüllt damit die Anforderungen der EU-Maschinenverordnung ab Januar 2027.</p>'+
+    '<p>Für ältere Maschinen können Sie Etiketten mit dem Code nachbestellen. Sprechen Sie dazu den Innendienst an.</p>'+
+    '<div class="wahlzeile"><a class="haupt" href="#/ersatzteile">Code ausprobieren</a></div>'+
+    '</div></section>';
+}
+
+function seiteService(){
+  return '<section class="rubrik"><div class="breit">'+
+    '<h2>Service</h2><p class="vor">Drei Leistungen, eine Zuständigkeit: der Innendienst in Schwäbisch Gmünd.</p>'+
+    '<div class="service">'+
+      '<div class="haupt"><h3>Ersatzteile rund um die Uhr</h3>'+
+      '<p>Der Code am Typenschild führt direkt zur Teileliste Ihrer Maschine, mit Preis und verbindlicher Bestellung. Kein Konto, keine Anmeldung, keine Wartezeit auf ein Angebot.</p>'+
+      '<ul class="schritte">'+
+        '<li><b>Mit Code</b>Scannen und bestellen, vier Minuten</li>'+
+        '<li><b>Ohne Code</b>Maschinennummer eingeben, gleiche Liste</li>'+
+        '<li><b>Ohne Treffer</b>Anfrage an den Innendienst, Antwort am Werktag</li>'+
+      '</ul>'+
+      '<div class="wahlzeile"><a class="haupt" href="#/ersatzteile" style="background:#2d79b0;color:#fff">Zum Ersatzteilportal</a></div></div>'+
+      '<div class="neben">'+
+        '<div class="karte"><h3>Wartung und Inspektion</h3><div class="rolle">Vor Ort oder im Werk</div>'+
+        '<p>Jährliche Inspektion mit Prüfprotokoll, Austausch der Verschleißteile, Abnahme nach Betriebssicherheitsverordnung. Reaktionszeit im Wartungsvertrag: 48 Stunden.</p>'+
+        '<div class="unten"><a class="mehr" href="#/kontakt">Termin anfragen</a></div></div>'+
+        '<div class="karte"><h3>Schulung</h3><div class="rolle">Zwei Tage im Werk</div>'+
+        '<p>Aufbau, Einstellung, Fehlersuche. Vier Termine im Jahr, maximal acht Teilnehmer, mit Zertifikat.</p>'+
+        '<div class="unten"><a class="mehr" href="#/kontakt">Termine erfragen</a></div></div>'+
+      '</div></div></div></section>';
+}
+
+function seiteUnternehmen(){
+  return '<section class="rubrik"><div class="schmal" style="padding-left:24px">'+
+    '<h2>Das Unternehmen</h2>'+
+    '<p>HerstellerXY wurde 1972 von Karl und Elisabeth Wieland als Reparaturbetrieb für Schleifmaschinen gegründet. '+
+    'Die erste eigene Maschine lief 1978 vom Band. Heute arbeiten 180 Menschen im Werk an der Industriestraße, davon 22 in der Instandhaltung und im Service.</p>'+
+    '<p>Geführt wird das Unternehmen in zweiter Generation von Martina Wieland. Gefertigt wird ausschließlich in Schwäbisch Gmünd, Guss und Elektronik kommen von Zulieferern aus der Region.</p>'+
+    '<h2 style="margin-top:34px">Was uns wichtig ist</h2>'+
+    '<p>Eine Maschine, die dreißig Jahre läuft, braucht dreißig Jahre Ersatzteile. Deshalb halten wir Teile mindestens fünfzehn Jahre nach dem Ende einer Baureihe vor und dokumentieren jede ausgelieferte Maschine mit ihrer Auftragsstückliste.</p>'+
+    '<p>Zertifiziert nach ISO 9001 seit 1998. Konformitätserklärungen nach Maschinenverordnung (EU) 2023/1230 liegen jeder Maschine digital bei.</p>'+
+    '</div></section>';
+}
+
+function seiteKontakt(){
+  return '<section class="rubrik"><div class="breit"><h2>Kontakt</h2>'+
+    '<p class="vor">Für Ersatzteile brauchen Sie uns nicht anzurufen. Für alles andere gern.</p>'+
+    '<div class="kontakt">'+
+      '<div class="sp"><h3>Ersatzteilinnendienst</h3><p class="mono">'+esc(H.tel)+'</p>'+
+      '<p><a href="mailto:'+esc(H.mail)+'">'+esc(H.mail)+'</a></p>'+
+      '<p style="color:#6b7076;font-size:.86rem">Mo bis Do 7 bis 17 Uhr, Fr bis 14 Uhr</p>'+
+      '<p style="margin-top:10px"><a href="#/ersatzteile">Teil selbst bestellen</a></p></div>'+
+      '<div class="sp"><h3>Service und Wartung</h3><p class="mono">+49 7171 9280 60</p>'+
+      '<p><a href="mailto:service@herstellerxy.de">service@herstellerxy.de</a></p></div>'+
+      '<div class="sp"><h3>Werk und Verwaltung</h3><p>HerstellerXY GmbH<br>Industriestraße 14<br>73527 Schwäbisch Gmünd</p>'+
+      '<p class="mono" style="margin-top:8px">+49 7171 9280 0</p></div>'+
+    '</div></div></section>';
+}
+
+/* ========== Portal ========== */
+function seiteErsatzteile(){
+  const karten = MASCHINEN.map(m =>
+    '<button class="wand" data-go="#/ersatzteile/m/'+m.code+'">'+schild(m, true)+
+    '<div class="fall"><b>'+esc(m.standort)+'</b><span>'+esc(m.hinweis)+'</span></div></button>').join('');
+  return krumen(PORTAL.slice(0,2), 'Ersatzteile').replace('class="krumen"','class="krumen weit"')+
+    '<div class="app weit"><div class="block">'+
+    '<h1>Ersatzteile zu Ihrer Maschine</h1>'+
+    '<p class="sub">Scannen Sie den Code am Typenschild Ihrer Maschine. Sie sehen dann genau die Teile, die in dieser Maschine verbaut sind, mit Preis und Verfügbarkeit.</p>'+
+    '<div class="hinweisbox">Zum Ausprobieren: tippen Sie auf eines der vier Typenschilder. Das ist dieselbe Seite, auf der ein Instandhalter nach dem Scan landet.<br>'+
+    '<span class="massstab">Demo-Datenstand: 4 von '+DATEN.daten.bestand.toLocaleString('de-DE')+' Maschinen im Feld, '+(LISTEN['HXY-320'].length+LISTEN['HXY-240'].length+LISTEN['HXY-120'].length)+' von rund 61.000 Teilen.</span></div>'+
+    '<div class="wandreihe">'+karten+'</div>'+
+    '<div class="wahlzeile" style="margin-top:4px"><a class="neben" href="#/ersatzteile/suche" style="width:100%;justify-content:center">Kein Code lesbar? Maschinennummer eingeben</a></div>'+
+    '</div>'+
+    '<div class="dienste">'+
+      '<h2>Interner Bereich</h2><p class="sub" style="font-size:.85rem">Nur für Mitarbeiter von '+esc(H.kurz)+'. Im Prototyp ohne Anmeldung sichtbar.</p>'+
+      '<a href="#/intern/bestellungen">Eingegangene Bestellungen<span>'+(bestellungen.length+rueckfragen.length)+' Vorgänge</span></a>'+
+      '<a href="#/intern/postausgang">Postausgang<span>'+postausgang.length+' Nachrichten</span></a>'+
+      '<a href="#/intern/etiketten">Etikettenbogen<span>4 Codes</span></a>'+
+      '<a href="#/intern/daten">Woher die Daten kommen<span>2 Dateien</span></a>'+
+      '<a href="#/intern/protokoll">Protokoll dieses Gesprächs<span>'+ereignisse.length+' Ereignisse</span></a>'+
+    '</div></div>';
+}
+
+function seiteMaschine(code){
+  const m = maschine(code);
+  if(!m) return seiteUnbekannt();
+  if(letzteMaschine !== m.code){ filter = {q:'', g:[], v:false}; mengen = {}; letzteMaschine = m.code; }
+  const alle = teileVon(m);
+  const gruppen = [...new Set(alle.map(t => t.g))].sort();
+  const gefiltert = alle.filter(t => {
+    if(filter.v && !t.v) return false;
+    if(filter.g.length && !filter.g.includes(t.g)) return false;
+    if(filter.q){ const q = filter.q.toLowerCase();
+      if(!(t.b.toLowerCase().includes(q) || t.n.toLowerCase().includes(q))) return false; }
+    return true;
+  });
+  letzteTrefferzahl = gefiltert.length;
+  const chips = '<div class="chips">'+
+    gruppen.map(g => '<button class="chip" data-g="'+esc(g)+'" aria-pressed="'+filter.g.includes(g)+'">'+esc(g)+'</button>').join('')+
+    '<button class="chip ver" data-v="1" aria-pressed="'+filter.v+'">Verschleißteile</button></div>';
+  const suche = '<div class="block"><div class="suchfeld">'+
+    '<input id="q" type="search" inputmode="search" placeholder="Teil oder Nummer suchen" value="'+esc(filter.q)+'" aria-label="Teil oder Nummer suchen">'+
+    (filter.q ? '<button class="leeren" id="q-leeren" aria-label="Suche leeren">&times;</button>' : '')+
+    '</div></div>';
+  const kopfzeile = krumen(PORTAL, m.sn);
+
+  if(!m.gepflegt){
+    const warn = '<div class="warnung"><h2>Keine geprüfte Teileliste zu dieser Maschine</h2>'+
+      '<p>Zu Masch.-Nr. '+esc(m.sn)+' liegt bei uns keine maschinengenaue Stückliste vor. Die folgende Liste gilt für den Typ '+esc(m.typ.split(' ')[0])+' und kann von Ihrer Maschine abweichen.</p>'+
+      '<button class="btn voll" data-go="#/ersatzteile/m/'+m.code+'/rueckfrage">Teil anfragen statt bestellen</button></div>';
+    const zeilen = gefiltert.map(t => teilZeile(m, t, {ungeprueft:true})).join('');
+    return kopfzeile+'<div class="app"><div class="block">'+schild(m,false)+'</div>'+warn+suche+chips+
+      '<div class="zaehler">'+gefiltert.length+' von '+alle.length+' Teilen des Typs</div>'+
+      '<ul class="liste">'+zeilen+'</ul>'+
+      (gefiltert.length?'':'<div class="leer">Kein Teil gefunden.<br><button class="btn sek" style="margin-top:12px" id="reset">Filter zurücksetzen</button></div>')+'</div>';
+  }
+
+  const zeilen = gefiltert.map(t => teilZeile(m, t)).join('');
+  const unberuehrt = !filter.q && !filter.g.length && !filter.v;
+  const gesehen = new Set();
+  const haeufig = alle.filter(t => t.v && !t.fr).sort((a,b) => (a.rang ?? 9)-(b.rang ?? 9))
+    .filter(t => { const w = t.b.split(' ')[0]; if(gesehen.has(w)) return false; gesehen.add(w); return true; }).slice(0, 6);
+  const block = (unberuehrt && haeufig.length)
+    ? '<div class="abschnitt"><h2>Häufig gebraucht an dieser Maschine</h2>'+
+      '<p>Die sechs Positionen, die an einer '+esc(m.typ.split(' ')[0])+' am häufigsten getauscht werden. Weitere Größen über den Filter Verschleißteile.</p></div>'+
+      '<ul class="liste">'+haeufig.map(t => teilZeile(m, t)).join('')+'</ul>'+
+      '<div class="abschnitt trenner"><h2>Alle '+alle.length+' Teile dieser Maschine</h2></div>'
+    : '';
+  const umbauHinweis = m.umbau
+    ? '<div class="umbau"><b>Diese Maschine wurde '+m.umbau.jahr+' umgebaut.</b> '+esc(m.umbau.was)+
+      '. Die Teile der Baugruppe '+esc(m.umbau.g)+' können deshalb von der Liste abweichen. '+
+      'Im Zweifel beim Innendienst nachfragen.</div>'
+    : '';
+
+  return kopfzeile+'<div class="app"><div class="block">'+schild(m,false)+'</div>'+umbauHinweis+block+suche+chips+
+    '<div class="zaehler">'+gefiltert.length+' von '+alle.length+' Teilen</div>'+
+    '<ul class="liste">'+zeilen+'</ul>'+
+    (gefiltert.length?'':'<div class="leer">Kein Teil gefunden.<br><button class="btn sek" style="margin-top:12px" id="reset">Filter zurücksetzen</button></div>')+'</div>';
+}
+
+function seiteUnbekannt(){
+  return krumen(PORTAL, 'unbekannt')+'<div class="app"><div class="block"><h1>Diesen Code kennen wir nicht</h1>'+
+    '<p>Der Code gehört zu keiner Maschine von '+esc(H.name)+'. Prüfen Sie den Code am Typenschild oder suchen Sie über die Maschinennummer.</p>'+
+    '<button class="btn voll" data-go="#/ersatzteile/suche">Nach Maschinennummer suchen</button></div></div>';
+}
+
+function seiteSuche(){
+  return krumen(PORTAL, 'Suche')+'<div class="app"><div class="block"><h1>Maschinennummer eingeben</h1>'+
+    '<p class="sub">Wenn der Code am Typenschild unlesbar ist: Die Maschinennummer steht auf dem Schild und in Ihren Unterlagen.</p>'+
+    '<div class="feld"><label for="sn">Maschinennummer</label>'+
+    '<input id="sn" type="text" inputmode="text" autocapitalize="characters" placeholder="HXY-2016-0471"></div>'+
+    '<button class="btn voll" id="sn-los">Maschine suchen</button>'+
+    '<div id="sn-erg" style="margin-top:18px"></div></div></div>';
+}
+
+function feld(id, label, typ, opt){
+  return '<div class="feld"><label for="'+id+'">'+esc(label)+(opt?' <span class="opt">(freiwillig)</span>':'')+'</label>'+
+    '<input id="'+id+'" type="'+typ+'"'+(typ==='email'?' inputmode="email" autocomplete="email"':'')+'>'+
+    '<div class="meldung">Bitte ausfüllen: '+esc(label)+'.</div></div>';
+}
+
+function seiteRueckfrage(code){
+  const m = maschine(code); if(!m) return seiteUnbekannt();
+  return krumen(PORTAL.concat([{t:m.sn, href:'#/ersatzteile/m/'+m.code}]), 'Anfrage')+
+    '<div class="app"><div class="block"><h1>Teil anfragen</h1>'+
+    '<p class="sub">Der Innendienst klärt das Teil anhand Ihrer Angaben und meldet sich mit Preis und Liefertermin.</p>'+
+    '<form id="rf" novalidate>'+
+    feld('rf-firma','Firma','text')+feld('rf-name','Ansprechpartner','text')+
+    feld('rf-mail','E-Mail','email')+feld('rf-tel','Telefon','tel')+
+    '<div class="feld"><label for="rf-text">Was wird gesucht</label>'+
+    '<textarea id="rf-text" placeholder="Lage an der Maschine, Aussehen, Maße, was Sie bereits ausgeschlossen haben"></textarea>'+
+    '<div class="meldung">Bitte beschreiben Sie das gesuchte Teil.</div></div>'+
+    '<div class="feld"><label for="rf-nr">Vermutete Teilenummer <span class="opt">(freiwillig)</span></label>'+
+    '<input id="rf-nr" type="text" value="'+esc(vorbelegung())+'"></div>'+
+    '<button class="btn voll" type="submit">Anfrage senden</button></form></div></div>';
+}
+
+function vorbelegung(){
+  try{ const v = sessionStorage.getItem('hxy-vorbelegung') || ''; sessionStorage.removeItem('hxy-vorbelegung'); return v; }
+  catch(e){ return ''; }
+}
+
+function seiteKorb(){
+  const zurueck = korb.length ? [{t:'Maschine '+korb[0].sn, href:'#/ersatzteile/m/'+korb[0].code}] : [];
+  const kopfzeile = krumen(PORTAL.concat(zurueck), 'Warenkorb');
+  if(!korb.length) return kopfzeile+'<div class="app"><div class="block"><h1>Noch nichts ausgewählt</h1>'+
+    '<p class="sub">Scannen Sie den Code an Ihrer Maschine, um die passenden Teile zu sehen.</p>'+
+    '<button class="btn voll sek" data-go="#/ersatzteile">Zur Maschinenauswahl</button></div></div>';
+  const mehrere = new Set(korb.map(p => p.code)).size > 1;
+  const zeilen = korb.map((p,i) => '<div class="pos"><div class="l">'+
+    '<div class="ben">'+esc(p.ben)+'</div><div class="nr">'+p.nr+
+    ((p.vpe > 1) ? '  '+(p.menge/p.vpe)+' x '+esc(p.vt) : '')+'</div>'+
+    '<div class="menge" style="margin-top:8px;display:inline-flex">'+
+      '<button data-kminus="'+i+'" aria-label="Menge verringern">&minus;</button>'+
+      '<span class="wert">'+p.menge+'</span>'+
+      '<button data-kplus="'+i+'" aria-label="Menge erhöhen">+</button></div>'+
+    ' <button class="btn sek" data-kweg="'+i+'" style="margin-left:8px">Entfernen</button>'+
+    '</div><div class="r">'+eur(p.preis*p.menge)+'<small>'+eur(p.preis)+' je Stück</small></div></div>').join('');
+  return kopfzeile+'<div class="app"><div class="block"><h1>Warenkorb</h1>'+
+    (mehrere ? '<div class="hinweisbox">Der Warenkorb enthält Teile aus mehreren Maschinen. Das ist möglich, die Bestellung wird nach Maschine getrennt übermittelt.</div>' : '')+
+    zeilen+
+    '<div class="summe"><span>Zwischensumme</span><span class="w">'+eur(korbSumme())+'</span></div>'+
+    '<p class="fuss-hinweis">Preisstand '+PREISSTAND+'. Preise zuzüglich Fracht und Umsatzsteuer. '+
+    'Für Eilbestellungen mit stehender Maschine kommen 3 Prozent Zuschlag hinzu.</p>'+
+    '<button class="btn voll" data-go="#/ersatzteile/bestellen">Weiter zur Bestellung</button></div></div>';
+}
+
+function summenBlock(eil, netto){
+  const n = (netto === undefined) ? korbSumme() : netto;
+  const auf = eilAufschlag(n, eil);
+  return (auf
+    ? '<div class="zwischen"><span>Zwischensumme</span><span class="w">'+eur(n)+'</span></div>'+
+      '<div class="zwischen eil"><span>Zuschlag Eilbestellung, 3 Prozent</span><span class="w">'+eur(auf)+'</span></div>'
+    : '')+
+    '<div class="summe"><span>Summe</span><span class="w">'+eur(n + auf)+'</span></div>';
+}
+
+function seiteBestellen(){
+  if(!korb.length) { location.hash = '#/ersatzteile/warenkorb'; return ''; }
+  const zeilen = korb.map(p => '<div class="pos"><div class="l"><div class="ben">'+esc(p.ben)+'</div>'+
+    '<div class="nr">'+p.nr+'  '+p.menge+' Stück</div></div>'+
+    '<div class="r">'+eur(p.preis*p.menge)+'</div></div>').join('');
+  return krumen(PORTAL.concat([{t:'Warenkorb', href:'#/ersatzteile/warenkorb'}]), 'Bestellung')+
+    '<div class="app"><div class="block"><h1>Bestellung abschicken</h1>'+
+    '<form id="bf" novalidate>'+
+    feld('b-firma','Firma','text')+feld('b-name','Ansprechpartner','text')+
+    feld('b-mail','E-Mail','email')+feld('b-tel','Telefon','tel')+
+    '<div class="feld"><label for="b-adr">Lieferadresse</label>'+
+    '<textarea id="b-adr" placeholder="Straße, PLZ, Ort, Halle oder Tor"></textarea>'+
+    '<div class="meldung">Bitte ausfüllen: Lieferadresse.</div></div>'+
+    feld('b-best','Ihre Bestellnummer','text',true)+
+    '<fieldset><legend>Dringlichkeit</legend><div class="wahl">'+
+      '<label><input type="radio" name="dring" value="normal" checked><span>Normal</span></label>'+
+      '<label><input type="radio" name="dring" value="eil"><span>Maschine steht<small>+3 % Zuschlag</small></span></label>'+
+    '</div></fieldset>'+
+    '<h2 style="margin-top:22px">Ihre Positionen</h2>'+zeilen+
+    '<div id="summen">'+summenBlock(false)+'</div>'+
+    '<p class="fuss-hinweis">Preisstand '+PREISSTAND+'. Preise zuzüglich Fracht und Umsatzsteuer. Mit dem Absenden bestellen Sie verbindlich bei '+esc(H.name)+'.</p>'+
+    '<button class="btn voll" type="submit">Verbindlich bestellen</button></form></div></div>';
+}
+
+function seiteQuittung(nr){
+  const b = bestellungen.find(x => x.nr === nr);
+  if(!b) return seiteUnbekannt();
+  const zeilen = b.pos.map(p => '<div class="pos"><div class="l"><div class="ben">'+esc(p.ben)+'</div>'+
+    '<div class="nr">'+p.nr+'  '+p.menge+' Stück</div></div><div class="r">'+eur(p.preis*p.menge)+'</div></div>').join('');
+  return krumen(PORTAL, b.nr)+'<div class="app"><div class="quittung"><div class="nr">'+b.nr+'</div>'+
+    '<div class="wann">eingegangen '+b.wann+'</div>'+
+    '<p>Ihre Bestellung liegt beim Innendienst. Eine Bestätigung ging an '+esc(b.mail)+'.</p>'+
+    (b.dring==='eil'?'<p style="color:var(--rot);font-weight:500">Als Eilfall gekennzeichnet: Maschine steht.</p>':'')+
+    '</div><div class="block">'+zeilen+
+    summenBlock(b.dring === 'eil', b.netto !== undefined ? b.netto : b.summe)+
+    '<p class="fuss-hinweis">Im Prototyp wird nichts versendet. Die Nachricht an den Innendienst liegt im Postausgang.</p>'+
+    '<button class="btn voll sek" data-go="#/intern/postausgang">Nachricht im Postausgang ansehen</button>'+
+    '<p style="margin-top:14px"><a href="#/ersatzteile">Zurück zur Maschinenauswahl</a></p></div></div>';
+}
+
+/* ===== Interner Bereich ===== */
+function internKopf(wo){
+  return '<div class="intern-kopf"><div class="innen"><b>Interner Bereich</b>'+
+    '<span>'+esc(wo)+'</span><a href="#/ersatzteile" style="margin-left:auto">zurück zum Portal</a></div></div>';
+}
+
+function seiteIntern(){
+  const ohne = bestellungen.length, summe = bestellungen.reduce((s,b) => s + b.summe, 0);
+  const vorgaenge = [...bestellungen.map(b => ({t:'b', d:b})), ...rueckfragen.map(r => ({t:'r', d:r}))]
+    .sort((a,b) => b.d.ts - a.d.ts);
+  const liste = vorgaenge.length ? vorgaenge.map(v => v.t === 'b' ? bestellZeile(v.d) : rueckfrageZeile(v.d)).join('')
+    : '<div class="leer">Noch kein Vorgang. Bestellen Sie im Portal etwas, dann erscheint es hier.</div>';
+  return internKopf('Ersatzteilinnendienst')+'<div class="app"><div class="block"><h1>Was heute hereinkam</h1>'+
+    '<p class="sub">Sicht des Innendienstes von '+esc(H.name)+'.</p>'+
+    '<div class="kennzahlen">'+
+      '<div><b>'+vorgaenge.length+'</b><span>Vorgänge</span></div>'+
+      '<div><b>'+ohne+'</b><span>ohne Rückfrage</span></div>'+
+      '<div><b>'+eur(summe)+'</b><span>Bestellwert</span></div>'+
+    '</div>'+liste+'</div></div>';
+}
+
+function bestellZeile(b){
+  return '<div class="vorgang"><div class="k"><span class="nr">'+b.nr+'</span><span class="w">'+eur(b.summe)+'</span></div>'+
+    '<div class="m">'+esc(b.maschine)+'  '+b.pos.length+' Positionen  '+b.wann+
+      (b.dring==='eil'?'  <span class="eil">Maschine steht, '+eur(b.aufschlag||0)+' Zuschlag</span>':'')+'</div>'+
+    '<div class="m">'+esc(b.firma)+', '+esc(b.name)+'</div>'+
+    '<details><summary>Datensatz für das ERP ansehen</summary><pre>'+esc(JSON.stringify(b.anhang, null, 2))+'</pre></details></div>';
+}
+
+function rueckfrageZeile(r){
+  return '<div class="vorgang"><div class="k"><span class="nr">Rückfrage</span><span class="w" style="color:var(--warn)">offen</span></div>'+
+    '<div class="m">'+esc(r.maschine)+'  '+r.wann+'</div>'+
+    '<div class="m">'+esc(r.firma)+', '+esc(r.name)+'</div>'+
+    '<details><summary>Anfragetext ansehen</summary><pre>'+esc(r.text)+'</pre></details></div>';
+}
+
+function seitePost(){
+  const liste = postausgang.length ? postausgang.slice().reverse().map(p =>
+    '<div class="mail"><div class="an">an '+esc(p.an)+'  '+p.wann+'</div>'+
+    '<div class="be">'+esc(p.betreff)+'</div>'+
+    '<div class="txt">'+esc(p.text)+'</div>'+
+    (p.anhang ? '<details style="margin-top:8px"><summary style="font-size:.85rem;color:var(--blau);cursor:pointer">Anhang bestellung.json</summary><pre style="background:#f6f7f8;border:1px solid var(--linie);padding:10px;overflow-x:auto;font-family:var(--mono);font-size:.74rem;white-space:pre-wrap;word-break:break-word">'+esc(JSON.stringify(p.anhang,null,2))+'</pre></details>' : '')+
+    '</div>').join('') : '<div class="leer">Noch nichts versendet.</div>';
+  return internKopf('Postausgang')+'<div class="app"><div class="block"><h1>Postausgang</h1>'+
+    '<p class="sub">Im Prototyp geht keine Mail hinaus. Was das echte System verschicken würde, steht hier.</p>'+liste+'</div></div>';
+}
+
+function seiteEtiketten(){
+  const et = MASCHINEN.map(m => '<div class="etikett">'+qrSvg(m.code)+
+    '<div class="e-t"><div class="sn">'+esc(m.sn)+'</div><div class="ty">'+esc(m.typ)+'</div>'+
+    '<div class="zw">Ersatzteile zu dieser Maschine</div>'+
+    '<div class="u">'+esc(kurzUrl(m.code))+'</div></div></div>').join('');
+  return internKopf('Etikettenbogen')+'<div class="app"><div class="bogen-info"><h1>Etikettenbogen</h1>'+
+    '<p class="sub nicht-drucken">Für Bestandsmaschinen im Feld. Druck auf Etikettenbogen mit 63,5 mal 33,9 Millimetern, 24 Stück je A4-Seite. Jeder Code enthält genau eine Adresse nach IEC 61406, Fehlerkorrektur Stufe Q.</p>'+
+    '<button class="btn voll nicht-drucken" onclick="window.print()">Bogen drucken</button></div>'+
+    '<div class="bogen">'+et+'</div></div>';
+}
+
+function seiteDaten(){
+  const m1 = MASCHINEN[1], m2 = MASCHINEN[2];
+  const zeile = (m, t) => [m.sn, t.n, t.b, t.g, t.p.toFixed(2).replace('.', ','),
+    PREISSTAND, t.l ? 'ja' : 'nein', t.vpe || 1].join(';');
+  const bsp = teileVon(m1);
+  const t1 = bsp.find(t => t.vpe) || bsp[0];
+  const t2 = bsp.find(t => !t.vpe && t !== t1) || bsp[1];
+  const maschinenCsv = 'seriennummer;typ;baujahr;standort\n'+
+    [m1, m2].map(m => [m.sn, m.typ.split(' ')[0], m.jahr, m.standort].join(';')).join('\n');
+  const teileCsv = 'seriennummer;teilenummer;benennung;baugruppe;preis;preisstand;lagerteil;vpe\n'+
+    zeile(m1, t1)+'\n'+zeile(m1, t2);
+  return internKopf('Datenherkunft')+'<div class="app"><div class="block">'+
+    '<h1>Woher die Teileliste kommt</h1>'+
+    '<p class="sub">Zwei Dateien aus Ihrem System, einmal am Anfang und danach nächtlich. Keine Schnittstelle, kein Projekt.</p>'+
+    '<h2 style="margin-top:22px">Datei 1: Ihre Maschinen</h2>'+
+    '<p class="klein">Pflicht sind Seriennummer und Typ. Ohne Seriennummer bleibt nur Typgenauigkeit, und das Portal ist dann kaum mehr als ein PDF-Katalog.</p>'+
+    '<pre class="csv">'+esc(maschinenCsv)+'</pre>'+
+    '<h2 style="margin-top:22px">Datei 2: Teile je Maschine</h2>'+
+    '<p class="klein">Pflicht sind Seriennummer, Teilenummer, Benennung und Preis. Baugruppe, Verpackungseinheit und Lagerkennzeichen machen die Liste brauchbar, sind aber nicht zwingend.</p>'+
+    '<pre class="csv">'+esc(teileCsv)+'</pre>'+
+    '<h2 style="margin-top:22px">Was passiert, wenn Spalten fehlen</h2>'+
+    '<ul class="klein">'+
+      '<li>Ohne Preis wird aus der Bestellung eine Anfrage, der Innendienst muss wieder ran.</li>'+
+      '<li>Ohne Baugruppe entfällt der Filter. Bei 161 Positionen sucht der Instandhalter dann im Fließtext.</li>'+
+      '<li>Ohne Verpackungseinheit bestellt jemand ein Stück und bekommt zehn.</li>'+
+      '<li>Fehlt eine Seriennummer ganz, zeigt das Portal ehrlich die Typliste und bietet die Anfrage an.</li>'+
+    '</ul>'+
+    '<p class="klein" style="margin-top:18px">In diesem Demo-Datenstand: 4 Maschinen, '+(LISTEN['HXY-320'].length+LISTEN['HXY-240'].length+LISTEN['HXY-120'].length)+' Teile, '+Object.values(LISTEN).flat().filter(x => x.vpe).length+' davon mit Verpackungseinheit, '+Object.values(LISTEN).flat().filter(x => x.fr).length+' Zukaufteile.</p>'+
+    '</div></div>';
+}
+
+function seiteProtokoll(){
+  const start = ereignisse.length ? ereignisse[0].t : Date.now();
+  const suchen = ereignisse.filter(e => e.art === 'suche');
+  const leer = suchen.filter(e => / 0 Treffer$/.test(e.text));
+  const ersteSuche = suchen.length ? Math.round((suchen[0].t - start)/1000) : null;
+  const adds = ereignisse.filter(e => e.art === 'add').length;
+  const seiten = ereignisse.filter(e => e.art === 'seite').length;
+  const zeilen = ereignisse.slice().reverse().slice(0, 60).map(e =>
+    '<tr><td class="z">'+Math.round((e.t-start)/1000)+' s</td><td class="art">'+esc(e.art)+'</td><td>'+esc(e.text)+'</td></tr>').join('');
+  return internKopf('Protokoll')+'<div class="app"><div class="block">'+
+    '<h1>Protokoll dieses Gesprächs</h1>'+
+    '<p class="sub">Läuft nur im Browser und nur in dieser Sitzung. Nach dem Interview ablesen, dann leeren.</p>'+
+    '<div class="kennzahlen">'+
+      '<div><b>'+(ersteSuche === null ? 'keine' : ersteSuche+' s')+'</b><span>bis zur ersten Suche</span></div>'+
+      '<div><b>'+suchen.length+'</b><span>Suchen, davon '+leer.length+' ohne Treffer</span></div>'+
+      '<div><b>'+adds+'</b><span>Teile hinzugefügt</span></div>'+
+      '<div><b>'+seiten+'</b><span>Seitenwechsel</span></div>'+
+    '</div>'+
+    (leer.length ? '<h2 style="margin-top:20px">Suchen ohne Treffer</h2><ul class="klein">'+
+      leer.map(e => '<li>'+esc(e.text)+'</li>').join('')+'</ul>' : '')+
+    '<h2 style="margin-top:20px">Verlauf</h2>'+
+    (zeilen ? '<table class="prot"><thead><tr><th>Zeit</th><th>Art</th><th>Was</th></tr></thead><tbody>'+zeilen+'</tbody></table>'
+            : '<div class="leer">Noch nichts passiert.</div>')+
+    '<button class="btn sek voll" id="prot-leeren" style="margin-top:18px">Protokoll leeren</button>'+
+    '</div></div>';
+}
+
+/* ===== Aktionen ===== */
+function hinzufuegen(code, nr){
+  const m = maschine(code), t = teil(m, nr), anzahl = mengen[nr] || (t.vpe || 1);
+  const vorhanden = korb.find(p => p.code === code && p.nr === nr);
+  if(vorhanden) vorhanden.menge += anzahl;
+  else korb.push({code, nr, ben:t.b, preis:t.p, menge:anzahl, sn:m.sn, maschine:m.typ, vpe:t.vpe || 1, vt:t.vt || ''});
+  log('add', t.b+' x'+anzahl);
+  mengen[nr] = t.vpe || 1;
+  const wert = document.getElementById('mg-'+nr); if(wert) wert.textContent = mengen[nr];
+  const minus = document.querySelector('[data-minus="'+nr+'"]'); if(minus) minus.disabled = true;
+  speichern(); leisteZeichnen(true);
+}
+
+function leisteZeichnen(puls){
+  const l = document.getElementById('leiste');
+  const h = location.hash || '#/';
+  const aus = h.startsWith('#/ersatzteile/warenkorb') || h.startsWith('#/ersatzteile/bestell') || h.startsWith('#/intern');
+  const imPortal = h.startsWith('#/ersatzteile');
+  if(!korb.length || aus || !imPortal){ l.hidden = true; document.body.classList.remove('portal-aktiv'); return; }
+  l.hidden = false; document.body.classList.add('portal-aktiv');
+  document.getElementById('l-summe').textContent = eur(korbSumme());
+  const n = korbAnzahl();
+  document.getElementById('l-pos').textContent = n === 1 ? '1 Teil ausgewählt' : n + ' Teile ausgewählt';
+  if(puls){ const b = document.getElementById('l-summe'); b.classList.remove('puls'); void b.offsetWidth; b.classList.add('puls'); }
+}
+
+function mail(an, betreff, text, anhang){ postausgang.push({an, betreff, text, anhang, wann: jetzt()}); }
+
+function bestellungAnlegen(d){
+  zaehler++;
+  const nr = 'HXY-2026-' + String(zaehler).padStart(4,'0');
+  const pos = korb.map(p => ({nr:p.nr, ben:p.ben, menge:p.menge, preis:p.preis, sn:p.sn}));
+  const netto = korbSumme();
+  const eil = d.dring === 'eil';
+  const aufschlag = eilAufschlag(netto, eil);
+  const summe = Math.round((netto + aufschlag) * 100) / 100;
+  const sn = [...new Set(korb.map(p => p.sn))].join(', ');
+  const b = {nr, ts:Date.now(), wann:jetzt(), ...d, pos, netto, aufschlag, summe, maschine:sn,
+    anhang:{bestellnummer:nr, eingegangen:new Date().toISOString(), maschinennummer:sn,
+      besteller:{firma:d.firma, name:d.name, mail:d.mail, telefon:d.tel, bestellnummer:d.best || null},
+      lieferadresse:d.adr, dringlichkeit:d.dring === 'eil' ? 'Maschine steht' : 'normal',
+      preisstand:PREISSTAND,
+      positionen:pos.map(p => ({teilenummer:p.nr, benennung:p.ben, menge:p.menge, einzelpreis:p.preis, gesamt:Math.round(p.preis*p.menge*100)/100})),
+      zwischensumme:Math.round(netto*100)/100,
+      eilzuschlag:{satz:'3 %', betrag:aufschlag},
+      summe, waehrung:'EUR'}};
+  bestellungen.push(b);
+  mail(H.mail, 'Bestellung '+nr+' zu Maschine '+sn,
+    'Über das Ersatzteilportal ist eine Bestellung eingegangen.\n\n'+
+    'Bestellnummer: '+nr+'\nMaschine: '+sn+'\nBesteller: '+d.firma+', '+d.name+'\nPositionen: '+pos.length+
+    '\nZwischensumme: '+eur(netto)+
+    (eil ? '\nZuschlag Eilbestellung, 3 Prozent: '+eur(aufschlag) : '')+
+    '\nSumme: '+eur(summe)+'\nDringlichkeit: '+(eil ? 'Maschine steht' : 'normal')+
+    '\n\nDer strukturierte Datensatz hängt an.', b.anhang);
+  mail(d.mail, 'Ihre Bestellung '+nr+' bei '+H.name,
+    'Vielen Dank. Ihre Bestellung ist eingegangen und wird vom Innendienst bearbeitet.\n\n'+
+    'Bestellnummer: '+nr+'\nMaschine: '+sn+
+    (eil ? '\nZwischensumme: '+eur(netto)+'\nZuschlag Eilbestellung, 3 Prozent: '+eur(aufschlag) : '')+
+    '\nSumme: '+eur(summe)+
+    (eil ? '\n\nIhre Maschine steht. Wir bearbeiten die Bestellung bevorzugt.' : '')+
+    '\n\nPreisstand '+PREISSTAND+', zuzüglich Fracht und Umsatzsteuer.');
+  korb = []; speichern();
+  return nr;
+}
+
+function pruefe(ids){
+  let ok = true, erstes = null;
+  ids.forEach(id => {
+    const el = document.getElementById(id), f = el.closest('.feld');
+    const leer = !el.value.trim();
+    const mailFalsch = el.type === 'email' && el.value.trim() && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value.trim());
+    if(leer || mailFalsch){ f.classList.add('fehler'); ok = false; if(!erstes) erstes = el;
+      if(mailFalsch) f.querySelector('.meldung').textContent = 'Diese E-Mail-Adresse ist unvollständig.';
+    } else f.classList.remove('fehler');
+  });
+  if(erstes){ erstes.focus(); erstes.scrollIntoView({block:'center', behavior:'smooth'}); }
+  return ok;
+}
+
+/* ===== Routing ===== */
+const SEITEN_NAV = {'#/maschinen':'maschinen', '#/service':'service', '#/unternehmen':'unternehmen',
+  '#/kontakt':'kontakt', '#/ersatzteile':'ersatzteile'};
+
+function zeichnen(){
+  const h = location.hash || '#/';
+  const s = seg();
+  let html = '', portal = false;
+  if(h === '#/' || h === '' || h === '#') html = seiteStart();
+  else if(s[0] === 'maschinen') html = seiteMaschinen();
+  else if(s[0] === 'service') html = seiteService();
+  else if(s[0] === 'unternehmen') html = seiteUnternehmen();
+  else if(s[0] === 'kontakt') html = seiteKontakt();
+  else if(s[0] === 'ersatzteile'){
+    portal = true;
+    if(!s[1]) { filter = {q:'', g:[], v:false}; mengen = {}; html = seiteErsatzteile(); }
+    else if(s[1] === 'm' && s[3] === 'rueckfrage') html = seiteRueckfrage(s[2]);
+    else if(s[1] === 'm') html = seiteMaschine(s[2]);
+    else if(s[1] === 'suche') html = seiteSuche();
+    else if(s[1] === 'warenkorb') html = seiteKorb();
+    else if(s[1] === 'bestellen') html = seiteBestellen();
+    else if(s[1] === 'bestellung') html = seiteQuittung(s[2]);
+    else html = seiteUnbekannt();
+  }
+  else if(s[0] === 'intern'){
+    portal = true;
+    if(s[1] === 'postausgang') html = seitePost();
+    else if(s[1] === 'etiketten') html = seiteEtiketten();
+    else if(s[1] === 'daten') html = seiteDaten();
+    else if(s[1] === 'protokoll') html = seiteProtokoll();
+    else html = seiteIntern();
+  }
+  else html = seiteStart();
+
+  document.getElementById('inhalt').innerHTML = portal
+    ? '<div class="portalseite">'+html+'</div>' : html;
+  document.querySelectorAll('.sk nav a').forEach(a => {
+    const ziel = a.getAttribute('href');
+    a.classList.toggle('aktiv', ziel !== '#/' && h.startsWith(ziel));
+  });
+  document.getElementById('hauptnav').classList.remove('offen');
+  if(!h.startsWith('#/intern/protokoll')) log('seite', h);
+  window.scrollTo(0,0);
+  leisteZeichnen(false);
+}
+
+document.addEventListener('click', e => {
+  if(e.target.closest('#burger')){ document.getElementById('hauptnav').classList.toggle('offen'); return; }
+  const go = e.target.closest('[data-go]');
+  if(go){ e.preventDefault(); location.hash = go.dataset.go; return; }
+  const add = e.target.closest('[data-add]');
+  if(add){ hinzufuegen(aktuellerCode(), add.dataset.add); return; }
+  const plus = e.target.closest('[data-plus]'), minus = e.target.closest('[data-minus]');
+  if(plus || minus){
+    const nr = (plus||minus).dataset.plus || (plus||minus).dataset.minus;
+    const t = teil(maschine(aktuellerCode()), nr), schritt = (t && t.vpe) || 1;
+    mengen[nr] = Math.max(schritt, (mengen[nr]||schritt) + (plus ? schritt : -schritt));
+    document.getElementById('mg-'+nr).textContent = mengen[nr];
+    const mb = document.querySelector('[data-minus="'+nr+'"]'); if(mb) mb.disabled = mengen[nr] <= schritt;
+    return;
+  }
+  const kp = e.target.closest('[data-kplus]'), km = e.target.closest('[data-kminus]'), kw = e.target.closest('[data-kweg]');
+  if(kp || km || kw){
+    const el = kp||km||kw;
+    const i = +(el.dataset.kplus ?? el.dataset.kminus ?? el.dataset.kweg);
+    const sch = korb[i] ? (korb[i].vpe || 1) : 1;
+    if(kp) korb[i].menge += sch;
+    if(km) korb[i].menge = Math.max(sch, korb[i].menge - sch);
+    if(kw) korb.splice(i,1);
+    speichern(); zeichnen(); return;
+  }
+  const chip = e.target.closest('.chip');
+  if(chip){
+    if(chip.dataset.v) filter.v = !filter.v;
+    else { const g = chip.dataset.g; filter.g = filter.g.includes(g) ? filter.g.filter(x => x !== g) : [...filter.g, g]; }
+    zeichnen(); return;
+  }
+  const anf = e.target.closest('[data-anfrage]');
+  if(anf){ e.preventDefault(); const code = aktuellerCode();
+    log('zukauf-anfrage', anf.dataset.anfrage);
+    sessionStorage.setItem('hxy-vorbelegung', anf.dataset.anfrage);
+    location.hash = '#/ersatzteile/m/'+code+'/rueckfrage'; return; }
+  if(e.target.id === 'prot-leeren'){ ereignisse = []; speichern(); zeichnen(); return; }
+  const nf = e.target.closest('[data-nf]');
+  if(nf){ e.preventDefault(); filter = {q:nf.dataset.nf, g:[], v:false}; zeichnen(); return; }
+  if(e.target.id === 'reset'){ filter = {q:'', g:[], v:false}; zeichnen(); return; }
+  if(e.target.id === 'q-leeren'){ filter.q = ''; zeichnen(); return; }
+  if(e.target.id === 'sn-los'){
+    const wert = document.getElementById('sn').value.trim().toUpperCase();
+    const m = MASCHINEN.find(x => x.sn.toUpperCase() === wert || x.sn.toUpperCase().endsWith(wert));
+    document.getElementById('sn-erg').innerHTML = m
+      ? '<button class="wand" data-go="#/ersatzteile/m/'+m.code+'">'+schild(m,false)+'<div class="fall"><b>Gefunden</b><span>tippen, um die Teileliste zu öffnen</span></div></button>'
+      : '<div class="warnung"><h2>Keine Maschine gefunden</h2><p>Zu „'+esc(wert)+'“ gibt es keinen Eintrag. Prüfen Sie die Nummer auf dem Typenschild, zum Beispiel HXY-2016-0471.</p></div>';
+    return;
+  }
+  if(e.target.closest('#l-btn')){ location.hash = '#/ersatzteile/warenkorb'; }
+});
+
+document.addEventListener('input', e => {
+  if(e.target.id === 'q'){
+    filter.q = e.target.value;
+    const pos = e.target.selectionStart;
+    zeichnen();
+    clearTimeout(suchTimer);
+    const begriff = filter.q;
+    if(begriff) suchTimer = setTimeout(() => log('suche', '„'+begriff+'“ '+letzteTrefferzahl+' Treffer'), 700);
+    const neu = document.getElementById('q');
+    if(neu){ neu.focus(); try{ neu.setSelectionRange(pos,pos); }catch(err){} }
+  }
+});
+
+document.addEventListener('change', e => {
+  if(e.target.name === 'dring'){
+    const ziel = document.getElementById('summen');
+    if(ziel) ziel.innerHTML = summenBlock(e.target.value === 'eil');
+    log('dringlichkeit', e.target.value === 'eil' ? 'Maschine steht, 3 Prozent Zuschlag' : 'normal');
+  }
+});
+
+document.addEventListener('submit', e => {
+  e.preventDefault();
+  if(e.target.id === 'bf'){
+    if(!pruefe(['b-firma','b-name','b-mail','b-tel','b-adr'])) return;
+    pos0zahl = korb.length;
+    const nr = bestellungAnlegen({
+      firma:val('b-firma'), name:val('b-name'), mail:val('b-mail'), tel:val('b-tel'),
+      adr:val('b-adr'), best:val('b-best'),
+      dring:document.querySelector('input[name="dring"]:checked').value});
+    log('bestellung', nr+' über '+pos0()+' Positionen');
+    location.hash = '#/ersatzteile/bestellung/'+nr;
+  }
+  if(e.target.id === 'rf'){
+    if(!pruefe(['rf-firma','rf-name','rf-mail','rf-tel','rf-text'])) return;
+    const m = maschine(aktuellerCode());
+    const r = {ts:Date.now(), wann:jetzt(), maschine:m.sn, firma:val('rf-firma'), name:val('rf-name'),
+      mail:val('rf-mail'), tel:val('rf-tel'), text:val('rf-text'), nr:val('rf-nr')};
+    rueckfragen.push(r);
+    log('rueckfrage', m.sn+(r.nr ? ' zu '+r.nr : ''));
+    mail(H.mail, 'Rückfrage zu '+m.sn,
+      'Über das Ersatzteilportal kam eine Rückfrage herein.\n\nMaschine: '+m.sn+' ('+m.typ+')\n'+
+      'Von: '+r.firma+', '+r.name+'\nTelefon: '+r.tel+'\nMail: '+r.mail+
+      (r.nr ? '\nVermutete Teilenummer: '+r.nr : '')+'\n\nGesucht wird:\n'+r.text);
+    speichern();
+    document.getElementById('inhalt').innerHTML = '<div class="portalseite">'+
+      krumen(PORTAL, 'Anfrage')+
+      '<div class="app"><div class="quittung" style="border-top-color:var(--warn)"><div class="nr" style="font-size:1.1rem">Anfrage ist raus</div>'+
+      '<div class="wann">'+r.wann+'</div>'+
+      '<p>Der Innendienst hat Ihre Anfrage zu Maschine '+esc(m.sn)+'. Antwort kommt an '+esc(r.mail)+'.</p></div>'+
+      '<div class="block"><p class="fuss-hinweis">Im Prototyp wird nichts versendet. Die Nachricht liegt im Postausgang.</p>'+
+      '<button class="btn voll sek" data-go="#/intern/postausgang">Nachricht ansehen</button>'+
+      '<p style="margin-top:14px"><a href="#/ersatzteile">Zurück zur Maschinenauswahl</a></p></div></div></div>';
+    window.scrollTo(0,0);
+  }
+});
+
+let pos0zahl = 0;
+const pos0 = () => pos0zahl;
+const val = id => (document.getElementById(id)?.value || '').trim();
+window.addEventListener('hashchange', zeichnen);
+laden(); zeichnen();
+
+</script>
+</body>
+</html>
